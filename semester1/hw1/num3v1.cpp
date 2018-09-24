@@ -5,13 +5,8 @@ void reverse(int a, int b, int num[]);
 
 int main()
 {
-    int m = 0;
-    cout << "Enter m\n";
-    cin >> m;
-
-    int n = 0;
-    cout << "Enter n\n";
-    cin >> n;
+    int const m = 8;
+    int const n = 5;
 
     int x[m + n + 1] = {};
 
