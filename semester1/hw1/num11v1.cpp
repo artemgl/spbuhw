@@ -5,9 +5,7 @@ void sortarray(int num[], int a, int b);
 
 int main()
 {
-    cout << "Enter the size of array\n";
-    int sizeOfArray = 0;
-    cin >> sizeOfArray;
+    int const sizeOfArray = 15;
 
     int x[sizeOfArray] = {};
     for (int i = 0; i < sizeOfArray; i++)
