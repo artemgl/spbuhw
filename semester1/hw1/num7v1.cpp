@@ -7,7 +7,7 @@ int main()
     int value = 0;
     cin >> value;
 
-    bool isPrime[value+1] = {};
+    bool isPrime[value + 1] = {};
     for (int k = 2; k <= value; k++)
     {
         isPrime[k] = true;
