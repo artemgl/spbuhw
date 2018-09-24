@@ -1,7 +1,8 @@
 #include <iostream>
 using namespace std;
 
-int factorial(int);
+int factorialRecursive(int);
+int factorialIterative(int);
 
 int main()
 {
@@ -9,19 +10,35 @@ int main()
     int n = 0;
     cin >> n;
 
-    cout << "Factorial of " << n << " is ";
-    cout << factorial(n) << "\n";
+    cout << "Factorial of " << n << " is:\n";
+    cout << factorialRecursive(n) << "\n";
+    cout << factorialIterative(n) << "\n";
 
     return 0;
 }
 
-int factorial(int x)
+int factorialRecursive(int x)
 {
     int result = 1;
 
     if (x > 1)
     {
-        result = factorial(x - 1) * x;
+        result = factorialRecursive(x - 1) * x;
+    }
+
+    return result;
+}
+
+int factorialIterative(int x)
+{
+    int result = 1;
+
+    if (x > 1)
+    {
+        for (int i = 2; i <= x; i++)
+        {
+            result *= i;
+        }
     }
 
     return result;
