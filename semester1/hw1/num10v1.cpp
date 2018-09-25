@@ -3,14 +3,22 @@ using namespace std;
 
 int main()
 {
-    cout << "Enter line\n";
-    string line;
-    getline(cin, line);
+    cout << "Enter the length of your string\n";
+    int length = 0;
+    cin >> length;
+
+    cout << "Enter the string\n";
+    char str[length] = {};
+
+    for (int i = 0; i < length; i++)
+    {
+        cin >> str[i];
+    }
 
     bool isPalindrome = true;
-    for (size_t i = 0; i < (line.length() - 1) / 2; i++)
+    for (int i = 0; i < (length - 1) / 2; i++)
     {
-        if (line[i] != line[line.length() - 1 - i])
+        if (str[i] != str[length - 1 - i])
         {
             isPalindrome = false;
         }
