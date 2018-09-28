@@ -1,8 +1,8 @@
 #include <iostream>
 using namespace std;
 
-int FibonacciIterative(int);
-int FibonacciRecursive(int);
+int fibonacciIterative(int);
+int fibonacciRecursive(int);
 
 int main()
 {
@@ -10,15 +10,16 @@ int main()
     int number = 0;
     cin >> number;
 
-    cout << FibonacciIterative(number) << "\n";
-    cout << FibonacciRecursive(number) << "\n";
+    cout << fibonacciIterative(number) << "\n";
+    cout << fibonacciRecursive(number) << "\n";
 
     return 0;
 }
 
-int FibonacciIterative(int a)
+int fibonacciIterative(int a)
 {
-    int buffer = 0, result = 1;
+    int result = 1;
+    int buffer = 0;
 
     if (a == 0)
     {
@@ -36,7 +37,7 @@ int FibonacciIterative(int a)
     return result;
 }
 
-int FibonacciRecursive(int a)
+int fibonacciRecursive(int a)
 {
     int result = 0;
 
@@ -47,7 +48,7 @@ int FibonacciRecursive(int a)
 
     if (a > 1)
     {
-        result = FibonacciRecursive(a - 2) + FibonacciRecursive(a - 1);
+        result = fibonacciRecursive(a - 2) + fibonacciRecursive(a - 1);
     }
 
     return result;
