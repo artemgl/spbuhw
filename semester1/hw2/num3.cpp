@@ -1,16 +1,14 @@
 #include <iostream>
 using namespace std;
 
-int gcd(int, int);
-int lcm(int, int);
-
 int main()
 {
     cout << "Enter n\n";
     int maxDenominator = 1;
     cin >> maxDenominator;
 
-    int a = 0, b = 1, c = 1, d = maxDenominator;
+    int a = 0, b = 1;
+    int c = 1, d = maxDenominator;
     while (c < d)
     {
         cout << c << "/" << d << ", ";
