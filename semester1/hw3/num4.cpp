@@ -1,4 +1,5 @@
 #include <iostream>
+#include <time.h>
 using namespace std;
 
 bool isVarious(char arr[], int size);
@@ -6,7 +7,17 @@ bool isVarious(char arr[], int size);
 int main()
 {
     int const n = 4;
-    char key[n] = {'9', '3', '0', '5'};
+    char key[n] = {};
+
+    srand(time(NULL));
+    for (int i = 0; i < n; i++)
+    {
+        do
+        {
+            key[i] = rand() % 10;
+        }
+        while (!isVarious(key, i + 1));
+    }
 
     printf("Try\tYour guess\n");
 
@@ -22,6 +33,7 @@ int main()
         for (int i = 0; i < n; i++)
         {
             cin >> guess[i];
+            guess[i] -= '0';
         }
 
         if (isVarious(guess, n))
