@@ -1,7 +1,7 @@
 #include <iostream>
 using namespace std;
 
-void sort(int arr[], int size);
+void quickSort(int num[], int, int);
 
 int main()
 {
@@ -25,7 +25,7 @@ int main()
         number /= 10;
     }
 
-    sort(digit, amountOfDigits);
+    quickSort(digit, 0, amountOfDigits - 1);
 
     if (digit[0] == 0)
     {
@@ -45,19 +45,45 @@ int main()
         cout << digit[i];
     }
 
+    delete[] digit;
+
     return 0;
 }
 
-void sort(int arr[], int size)
+void quickSort(int num[], int first, int last)
 {
-    for (int i = size - 1; i >= 1; i--)
+    if (first < last)
     {
-        for (int j = 1; j <= i; j++)
+        int length = last - first + 1;
+        int select = first + length / 2;
+        bool isSorted = false;
+        while (!isSorted)
         {
-            if (arr[j - 1] > arr[j])
+            isSorted = true;
+            for (int i = 0; i < select - first; i++)
             {
-                swap(arr[j - 1], arr[j]);
+                if (num[first + i] > num[select])
+                {
+                    swap(num[first + i], num[select]);
+                    select = first + i;
+                    isSorted = false;
+                    break;
+                }
+            }
+
+            for (int i = 0; i < last - select; i++)
+            {
+                if (num[last - i] <= num[select])
+                {
+                    swap(num[last - i], num[select]);
+                    select = last - i;
+                    isSorted = false;
+                    break;
+                }
             }
         }
+
+        quickSort(num, first, select - 1);
+        quickSort(num, select + 1, last);
     }
 }
