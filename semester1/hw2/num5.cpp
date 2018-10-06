@@ -1,9 +1,10 @@
 #include <iostream>
+#include <time.h>
 using namespace std;
 
 int pow(int a, int n);
 
-void pyramidalsort(int arr[], int size);
+void pyramidalSort(int arr[], int size);
 
 int main()
 {
@@ -13,17 +14,20 @@ int main()
 
     int *arr = new int[size] {};
 
+    srand(time(NULL));
     for (int i = 0; i < size; i++)
     {
         arr[i] = rand() % 100 + 1;
     }
 
-    pyramidalsort(arr, size);
+    pyramidalSort(arr, size);
 
     for (int i = 0; i < size; i++)
     {
         cout << arr[i] << ", ";
     }
+
+    delete[] arr;
 
     return 0;
 }
@@ -40,7 +44,7 @@ int pow(int a, int n)
     return result;
 }
 
-void pyramidalsort(int arr[], int size)
+void pyramidalSort(int arr[], int size)
 {
     int amountOfLevels = 0;
     while (size > 1)
@@ -55,30 +59,33 @@ void pyramidalsort(int arr[], int size)
         {
             for (int j = pow(2, i - 1) - 1; j < pow(2, i) - 1; j++)
             {
-                if (2 * j + 1 < size)
+                int leftIndex = 2 * j + 1;
+                int rightIndex = 2 * j + 2;
+
+                if (leftIndex < size)
                 {
-                    if (2 * j + 2 < size)
+                    if (rightIndex < size)
                     {
-                        if (arr[2 * j + 1] > arr[2 * j + 2])
+                        if (arr[leftIndex] > arr[rightIndex])
                         {
-                            if (arr[2 * j + 1] > arr[j])
+                            if (arr[leftIndex] > arr[j])
                             {
-                                swap(arr[2 * j + 1], arr[j]);
+                                swap(arr[leftIndex], arr[j]);
                             }
                         }
                         else
                         {
-                            if (arr[2 * j + 2] > arr[j])
+                            if (arr[rightIndex] > arr[j])
                             {
-                                swap(arr[2 * j + 2], arr[j]);
+                                swap(arr[rightIndex], arr[j]);
                             }
                         }
                     }
                     else
                     {
-                        if (arr[2 * j + 1] > arr[j])
+                        if (arr[leftIndex] > arr[j])
                         {
-                            swap(arr[2 * j + 1], arr[j]);
+                            swap(arr[leftIndex], arr[j]);
                         }
                     }
                 }
