@@ -7,8 +7,10 @@ int main()
     int maxDenominator = 1;
     cin >> maxDenominator;
 
-    int a = 0, b = 1;
-    int c = 1, d = maxDenominator;
+    int a = 0;
+    int b = 1;
+    int c = 1;
+    int d = maxDenominator;
     while (c < d)
     {
         cout << c << "/" << d << ", ";
