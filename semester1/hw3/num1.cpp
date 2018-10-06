@@ -1,26 +1,29 @@
 #include <iostream>
 using namespace std;
 
-void sort(int arr[], int size);
+void quickSort(int num[], int, int);
 
 int main()
 {
-    int const size = 13;
+    int size = 0;
+    cout << "Enter the size of array\n";
+    cin >> size;
 
-    int *arr = new int[size] {10, 4, 6, 3, 8, 6, 7, 9, 2, 9, 1, 11, 5};
+    int *arr = new int[size] {};
 
     for (int i = 0; i < size; i++)
     {
-        cout << arr[i] << ", ";
+        cout << "Enter the " << i + 1 << " element\n";
+        cin >> arr[i];
     }
 
-    sort(arr, size);
+    quickSort(arr, 0, size - 1);
 
     for (int j = size - 2; j >= 0; j--)
     {
         if (arr[j] == arr[j + 1])
         {
-            cout << "\n" << arr[j];
+            cout << "The largest repeated element is " << arr[j];
             break;
         }
     }
@@ -30,16 +33,40 @@ int main()
     return 0;
 }
 
-void sort(int arr[], int size)
+void quickSort(int num[], int first, int last)
 {
-    for (int i = size - 1; i >= 1; i--)
+    if (first < last)
     {
-        for (int j = 1; j <= i; j++)
+        int length = last - first + 1;
+        int select = first + length / 2;
+        bool isSorted = false;
+        while (!isSorted)
         {
-            if (arr[j - 1] > arr[j])
+            isSorted = true;
+            for (int i = 0; i < select - first; i++)
             {
-                swap(arr[j - 1], arr[j]);
+                if (num[first + i] > num[select])
+                {
+                    swap(num[first + i], num[select]);
+                    select = first + i;
+                    isSorted = false;
+                    break;
+                }
+            }
+
+            for (int i = 0; i < last - select; i++)
+            {
+                if (num[last - i] <= num[select])
+                {
+                    swap(num[last - i], num[select]);
+                    select = last - i;
+                    isSorted = false;
+                    break;
+                }
             }
         }
+
+        quickSort(num, first, select - 1);
+        quickSort(num, select + 1, last);
     }
 }
