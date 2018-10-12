@@ -46,6 +46,9 @@ int main()
     cout << "Your array: ";
     printArray(arrConsole, size);
 
+    delete []arrRandom;
+    delete []arrConsole;
+
     return 0;
 }
 
