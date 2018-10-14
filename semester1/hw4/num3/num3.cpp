@@ -43,6 +43,7 @@ int main()
     }
 
     fclose(f);
+    delete f;
 
     if (symbol != '\n' && isEmpty == false)
     {
