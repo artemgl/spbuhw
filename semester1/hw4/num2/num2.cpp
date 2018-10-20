@@ -51,10 +51,6 @@ int main()
         remove("buffer.txt");
     }
 
-    delete f;
-    delete fBuf;
-
-
     return 0;
 }
 
