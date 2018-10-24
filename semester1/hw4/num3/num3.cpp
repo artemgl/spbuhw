@@ -1,54 +1,44 @@
 #include <iostream>
+#include <fstream>
+#include <string>
 using namespace std;
 
 int main()
 {
-    char symbol = ' ';
-    bool isEmpty = true;
+    string str = "";
     int amount = 0;
-    FILE *f = fopen("file.txt", "r");
-    while (!feof(f))
+    ifstream f("file.txt");
+    while (!f.eof())
     {
-        fscanf(f, "%c", &symbol);
-        if (feof(f))
-        {
-            break;
-        }
+        getline(f, str);
+        bool isEmpty = true;
 
-        switch (symbol)
+        for (int i = 0; str[i] != '\0'; i++)
         {
-        case '\n':
-        {
+            switch (str[i])
+            {
+            case ' ':
+            case '\t':
+            case '\r':
+            {
+                break;
+            }
+            default:
+            {
+                isEmpty = false;
+                break;
+            }
+            }
+
             if (!isEmpty)
             {
                 amount++;
-                isEmpty = true;
+                break;
             }
-            break;
-        }
-        case ' ':
-        {
-            break;
-        }
-        case '\t':
-        {
-            break;
-        }
-        default:
-        {
-            isEmpty *= 0;
-            break;
-        }
         }
     }
 
-    fclose(f);
-    delete f;
-
-    if (symbol != '\n' && isEmpty == false)
-    {
-        amount++;
-    }
+    f.close();
 
     cout << "Amount of not empty strings is " << amount;
 
