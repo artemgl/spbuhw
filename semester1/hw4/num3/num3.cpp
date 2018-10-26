@@ -5,14 +5,16 @@ using namespace std;
 
 int main()
 {
-    string str = "";
+    char const fileName[] = {"file.txt"};
+    ifstream f(fileName);
+
     int amount = 0;
-    ifstream f("file.txt");
     while (!f.eof())
     {
+        string str = "";
         getline(f, str);
-        bool isEmpty = true;
 
+        bool isEmpty = true;
         for (int i = 0; str[i] != '\0'; i++)
         {
             switch (str[i])
