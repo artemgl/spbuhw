@@ -9,34 +9,31 @@ int main()
     ifstream f(fileName);
 
     int amount = 0;
-    while (!f.eof())
+    char currentSymbol = '\0';
+    while (f.get(currentSymbol))
     {
-        string str = "";
-        getline(f, str);
-
-        bool isEmpty = true;
-        for (int i = 0; str[i] != '\0'; i++)
+        switch (currentSymbol)
         {
-            switch (str[i])
-            {
-            case ' ':
-            case '\t':
-            case '\r':
-            {
-                break;
-            }
-            default:
-            {
-                isEmpty = false;
-                break;
-            }
-            }
+        case '\n':
+        case ' ':
+        case '\t':
+        case '\r':
+        {
+            break;
+        }
+        default:
+        {
+            amount++;
 
-            if (!isEmpty)
+            while (f.get(currentSymbol))
             {
-                amount++;
-                break;
+                if (currentSymbol == '\n')
+                {
+                    break;
+                }
             }
+            break;
+        }
         }
     }
 
