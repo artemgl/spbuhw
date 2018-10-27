@@ -1,18 +1,17 @@
-#include <stdio.h>
 #include <iostream>
+#include <fstream>
 using namespace std;
 
-void addNote(FILE *fBuf);
-void findNumber(FILE *f);
-void findName(FILE *f);
-void save(FILE *fBuf, FILE *f);
-
-int length(string str);
+void addNote(char const fileBufferName[]);
+void find(string currentLine, string inputLine, bool isFindNumber);
+void findNumber(char const fileName[]);
+void findName(char const fileName[]);
+void save(char const fileName[], char const fileBufferName[]);
 
 int main()
 {
-    FILE *f = nullptr;
-    FILE *fBuf = nullptr;
+    char const fileName[] = {"file.txt"};
+    char const fileBufferName[] = {"buffer.txt"};
 
     int input = 0;
     do
@@ -23,268 +22,162 @@ int main()
         {
             case 1:
             {
-                addNote(fBuf);
+                addNote(fileBufferName);
                 break;
             }
             case 2:
             {
-                findNumber(f);
+                findNumber(fileName);
                 break;
             }
             case 3:
             {
-                findName(f);
+                findName(fileName);
                 break;
             }
             case 4:
             {
-                save(fBuf, f);
+                save(fileName, fileBufferName);
                 break;
             }
         }
     }
     while (input);
 
-    if ((f = fopen("buffer.txt", "r")))
-    {
-        fclose(f);
-        remove("buffer.txt");
-    }
+    remove(fileBufferName);
 
     return 0;
 }
 
-int length(string str)
-{
-    char currentSymbol = '\0';
-    int result = 0;
-    do
-    {
-        currentSymbol = str[result++];
-    }
-    while (currentSymbol != '\0');
-
-    return result - 1;
-}
-
-void addNote(FILE *fBuf)
+void addNote(char const fileBufferName[])
 {
     cout << "Enter note through hyphen in this way: <name>-<number>" << endl;
 
-    string str = " ";
-    cin >> str;
+    string inputLine = " ";
+    cin >> inputLine;
 
-    fBuf = fopen("buffer.txt", "a");
+    ofstream foutBuf(fileBufferName, ios::app);
 
-    for (int i = 0; i < length(str); i++)
+    for (int i = 0; inputLine[i] != '\0'; i++)
     {
-        fprintf(fBuf, "%c", str[i]);
+        foutBuf << inputLine[i];
     }
-    fprintf(fBuf, "%c", ';');
+    foutBuf << "\n";
 
-    fclose(fBuf);
+    foutBuf.close();
 }
 
-void findNumber(FILE *f)
+void find(string currentLine, string inputLine, bool isFindNumber)
+{
+    size_t hyphenIndex = 0;
+    for (size_t i = 0; i < currentLine.length(); i++)
+    {
+        if (currentLine[i] == '-')
+        {
+            hyphenIndex = i;
+            break;
+        }
+    }
+
+    size_t beginComparison = hyphenIndex + 1;
+    size_t endComparison = currentLine.length() - 1;
+    size_t beginOutput = 0;
+    size_t endOutput = hyphenIndex - 1;
+    if (isFindNumber)
+    {
+        swap(beginComparison, beginOutput);
+        swap(endComparison, endOutput);
+    }
+
+    size_t comparisonLineLength = hyphenIndex;
+    if (!isFindNumber)
+    {
+        comparisonLineLength = 0;
+        for (size_t i = hyphenIndex + 1; i < currentLine.length(); i++)
+        {
+            comparisonLineLength++;
+        }
+    }
+    bool isEqual = true;
+    if (inputLine.length() != comparisonLineLength)
+    {
+        isEqual = false;
+    }
+    else
+    {
+        for (size_t i = beginComparison; i <= endComparison; i++)
+        {
+            if (currentLine[i] != inputLine[i - beginComparison])
+            {
+                isEqual = false;
+                break;
+            }
+        }
+    }
+
+    if (isEqual)
+    {
+        for (size_t i = beginOutput; i <= endOutput; i++)
+        {
+            cout << currentLine[i];
+        }
+        cout << endl;
+    }
+}
+
+void findNumber(char const fileName[])
 {
     cout << "Enter the name" << endl;
 
-    string str = " ";
-    cin >> str;
+    string inputLine = " ";
+    cin >> inputLine;
 
-    f = fopen("file.txt", "r");
+    ifstream fin(fileName);
 
-    char currentSymbol = fgetc(f);
-
-    while ((currentSymbol = fgetc(f)) != EOF)
+    string currentLine = "";
+    while (getline(fin, currentLine))
     {
-        while (currentSymbol != str[0] && currentSymbol != EOF)
-        {
-            do
-            {
-                currentSymbol = fgetc(f);
-            }
-            while (currentSymbol != ';');
-
-            currentSymbol = fgetc(f);
-        }
-
-        if (currentSymbol == EOF)
-        {
-            break;
-        }
-
-        bool isEqual = true;
-        for (int i = 1; i < length(str); i++)
-        {
-            currentSymbol = fgetc(f);
-            if (str[i] != currentSymbol)
-            {
-                isEqual = false;
-                break;
-            }
-        }
-
-        if (fgetc(f) != '-')
-        {
-            isEqual = false;
-        }
-
-        if (isEqual)
-        {
-            currentSymbol = fgetc(f);
-            do
-            {
-                cout << currentSymbol;
-                currentSymbol = fgetc(f);
-            }
-            while (currentSymbol != ';');
-            cout << endl;
-        }
-        else
-        {
-            while (currentSymbol != ';')
-            {
-                currentSymbol = fgetc(f);
-            }
-        }
+        find(currentLine, inputLine, true);
     }
 
-    fclose(f);
+    fin.close();
 }
 
-void findName(FILE *f)
+void findName(char const fileName[])
 {
     cout << "Enter the number" << endl;
 
-    string str = " ";
-    cin >> str;
+    string inputLine = " ";
+    cin >> inputLine;
 
-    f = fopen("file.txt", "r");
+    ifstream fin(fileName);
 
-    char currentSymbol = '\0';
-
-    while (currentSymbol != '-')
+    string currentLine = "";
+    while (getline(fin, currentLine))
     {
-        currentSymbol = fgetc(f);
+        find(currentLine, inputLine, false);
     }
 
-    while ((currentSymbol = fgetc(f)) != EOF)
-    {
-        while (currentSymbol != str[0] && currentSymbol != EOF)
-        {
-            do
-            {
-                currentSymbol = fgetc(f);
-            }
-            while (currentSymbol != '-' && currentSymbol != EOF);
-
-            currentSymbol = fgetc(f);
-        }
-
-        if (currentSymbol == EOF)
-        {
-            break;
-        }
-
-        bool isEqual = true;
-        for (int i = 1; i < length(str); i++)
-        {
-            currentSymbol = fgetc(f);
-            if (str[i] != currentSymbol)
-            {
-                isEqual = false;
-                break;
-            }
-        }
-
-        currentSymbol = fgetc(f);
-
-        if (currentSymbol == EOF)
-        {
-            break;
-        }
-
-        if (currentSymbol != ';')
-        {
-            isEqual = false;
-        }
-
-        if (isEqual)
-        {
-            do
-            {
-                fseek(f, -2, SEEK_CUR);
-            }
-            while (fgetc(f) != ';');
-
-            currentSymbol = fgetc(f);
-            do
-            {
-                cout << currentSymbol;
-                currentSymbol = fgetc(f);
-            }
-            while (currentSymbol != '-');
-            cout << endl;
-
-            do
-            {
-                currentSymbol = fgetc(f);
-            }
-            while (currentSymbol != '-' && currentSymbol != EOF);
-
-            if (currentSymbol == EOF)
-            {
-                break;
-            }
-        }
-        else
-        {
-            while (currentSymbol != '-' && currentSymbol != EOF)
-            {
-                currentSymbol = fgetc(f);
-            }
-
-            if (currentSymbol == EOF)
-            {
-                break;
-            }
-        }
-    }
-
-    fclose(f);
+    fin.close();
 }
 
-void save(FILE *fBuf, FILE *f)
+void save(char const fileName[], char const fileBufferName[])
 {
-    if (!(fBuf = fopen("buffer.txt", "r")))
+    ifstream finBuf(fileBufferName);
+    if (!finBuf.is_open())
     {
-        fclose(fBuf);
+        finBuf.close();
         return;
     }
-    f = fopen("file.txt", "r");
-    if (fgetc(f) == EOF)
+
+    ofstream fout(fileName, ios::app);
+
+    string currentLine = "";
+    while (getline(finBuf, currentLine))
     {
-        fclose(f);
-        f = fopen("file.txt", "w");
-        fprintf(f, "%c", ';');
-        fclose(f);
+        fout << currentLine << endl;
     }
 
-    f = fopen("file.txt", "a");
-
-    char currentSymbol = '\0';
-    while (!feof(fBuf))
-    {
-        currentSymbol = fgetc(fBuf);
-        if (currentSymbol != EOF)
-        {
-            fputc(currentSymbol, f);
-        }
-    }
-
-    fclose(fBuf);
-    fclose(f);
-
-    remove("buffer.txt");
+    finBuf.close();
+    fout.close();
 }
