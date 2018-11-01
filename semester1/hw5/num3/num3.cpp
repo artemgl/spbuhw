@@ -2,21 +2,25 @@
 #include "charstack.h"
 using namespace std;
 
-int length(string str);
+int length(char str[]);
 int priority(char c);
 
 int main()
 {
-    string str = "";
-    getline(cin, str);
+    int const maxLength = 256;
 
-    string outputLine = "";
+    cout << "Enter an expression without spaces" << endl;
+
+    char inputLine[maxLength] = "";
+    cin >> inputLine;
+
+    char outputLine[maxLength] = "";
 
     CharStack *stack = createCharStack();
 
-    for (int i = 0; i < length(str); i++)
+    for (int i = 0; i < length(inputLine); i++)
     {
-        switch (str[i])
+        switch (inputLine[i])
         {
             case '0':
             case '1':
@@ -29,7 +33,7 @@ int main()
             case '8':
             case '9':
             {
-                outputLine += str[i];
+                outputLine[length(outputLine)] = inputLine[i];
                 break;
             }
             case '+':
@@ -38,18 +42,18 @@ int main()
             case '/':
             {
                 char currentSymbol = '\0';
-                while (priority(currentSymbol = popChar(stack)) >= priority(str[i]))
+                while (priority(currentSymbol = popChar(stack)) >= priority(inputLine[i]))
                 {
-                    outputLine += currentSymbol;
+                    outputLine[length(outputLine)] = currentSymbol;
                 }
 
                 pushChar(stack, currentSymbol);
-                pushChar(stack, str[i]);
+                pushChar(stack, inputLine[i]);
                 break;
             }
             case '(':
             {
-                pushChar(stack, str[i]);
+                pushChar(stack, inputLine[i]);
                 break;
             }
             case ')':
@@ -57,7 +61,7 @@ int main()
                 char currentSymbol = '\0';
                 while ((currentSymbol = popChar(stack)) != '(')
                 {
-                    outputLine += currentSymbol;
+                    outputLine[length(outputLine)] = currentSymbol;
                 }
 
                 break;
@@ -67,7 +71,7 @@ int main()
 
     while (!isEmptyChar(stack))
     {
-        outputLine += popChar(stack);
+        outputLine[length(outputLine)] = popChar(stack);
     }
 
     cout << outputLine;
@@ -77,7 +81,7 @@ int main()
     return 0;
 }
 
-int length(string str)
+int length(char str[])
 {
     char currentSymbol = '\0';
     int result = 0;
