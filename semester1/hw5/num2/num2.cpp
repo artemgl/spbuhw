@@ -1,40 +1,57 @@
 #include <iostream>
+#include <fstream>
 using namespace std;
+
+int symbolIndex(char symbol);
+
+char const firstSymbol = 'a';
 
 int main()
 {
-    FILE *f = fopen("file.txt", "r");
+    int const alphabetPower = 26;
+    char const fileName[] = {"file.txt"};
 
-    char currentSymbol = '\0';
+    ifstream f(fileName);
 
-    if (isalpha(currentSymbol = fgetc(f)))
+    bool wasMet[alphabetPower] = {};
+    while (!f.eof())
     {
-        cout << currentSymbol;
-    }
+        char currentSymbol = '\0';
+        f.get(currentSymbol);
 
-    char previousSymbol = currentSymbol;
-
-    while ((currentSymbol = fgetc(f)) != EOF)
-    {
         if (isalpha(currentSymbol))
         {
-            if (isalpha(previousSymbol))
+            if (!wasMet[symbolIndex(currentSymbol)])
             {
-                if (currentSymbol != tolower(previousSymbol) && currentSymbol != toupper(previousSymbol))
-                {
-                    cout << currentSymbol;
-                }
-            }
-            else
-            {
-                cout << " " << currentSymbol;
+                cout << currentSymbol;
+                wasMet[symbolIndex(currentSymbol)] = true;
             }
         }
+        else
+        {
+            bool isEmpty = true;
+            for (int i = 0; i < alphabetPower; i++)
+            {
+                if (wasMet[i])
+                {
+                    isEmpty = false;
+                    wasMet[i] = false;
+                }
+            }
 
-        previousSymbol = currentSymbol;
+            if (!isEmpty)
+            {
+                cout << ' ';
+            }
+        }
     }
 
-    fclose(f);
+    f.close();
 
     return 0;
+}
+
+int symbolIndex(char symbol)
+{
+    return tolower(symbol) - firstSymbol;
 }
