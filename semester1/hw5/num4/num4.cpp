@@ -2,18 +2,20 @@
 #include "intstack.h"
 using namespace std;
 
-int length(string str);
-
 int main()
 {
-    string str = "";
-    getline(cin, str);
+    int const maxLength = 256;
+
+    cout << "Enter an expression without spaces in postfix entry" << endl;
+
+    char inputLine[maxLength] = "";
+    cin >> inputLine;
 
     IntStack *stack = createIntStack();
 
-    for (int i = 0; i < length(str); i++)
+    for (int i = 0; inputLine[i] != '\0'; i++)
     {
-        switch (str[i])
+        switch (inputLine[i])
         {
             case '0':
             case '1':
@@ -26,7 +28,7 @@ int main()
             case '8':
             case '9':
             {
-                pushInt(stack, str[i] - '0');
+                pushInt(stack, inputLine[i] - '0');
                 break;
             }
             case '+':
@@ -65,17 +67,4 @@ int main()
     deleteIntStack(stack);
 
     return 0;
-}
-
-int length(string str)
-{
-    char currentSymbol = '\0';
-    int result = 0;
-    do
-    {
-        currentSymbol = str[result++];
-    }
-    while (currentSymbol != '\0');
-
-    return result - 1;
 }
