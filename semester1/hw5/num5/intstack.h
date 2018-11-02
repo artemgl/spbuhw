@@ -15,7 +15,7 @@ IntStack *createIntStack();
 void deleteIntStack(IntStack *stack);
 
 void pushInt(IntStack *stack, int number);
-char popInt(IntStack *stack);
+int popInt(IntStack *stack);
 
 void printIntStack(IntStack *stack);
 

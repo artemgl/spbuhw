@@ -25,7 +25,7 @@ void pushInt(IntStack *stack, int number)
     stack->first = new IntStackElement {number, stack->first};
 }
 
-char popInt(IntStack *stack)
+int popInt(IntStack *stack)
 {
     if (isEmptyInt(stack))
     {
