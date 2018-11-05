@@ -89,7 +89,7 @@ void removeElement(Node *&node, int value)
                 Node *current = node;
                 while (current->leftChild)
                 {
-                    current = node->leftChild;
+                    current = current->leftChild;
                 }
 
                 current->leftChild = left;
