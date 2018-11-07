@@ -2,6 +2,7 @@
 using namespace std;
 
 void printAsBinary(int value);
+int addUpAsBinary(int first, int second);
 
 int main()
 {
@@ -19,8 +20,10 @@ int main()
     cout << "Binary second number:" << endl;
     printAsBinary(secondNumber);
 
-    cout << "The sum of this numbers: (" << firstNumber + secondNumber << ")" << endl;
-    printAsBinary(firstNumber + secondNumber);
+    int sum = addUpAsBinary(firstNumber, secondNumber);
+
+    cout << "The sum of this numbers: (" << sum << ")" << endl;
+    printAsBinary(sum);
 
     return 0;
 }
@@ -40,4 +43,19 @@ void printAsBinary(int value)
         cout << ' ';
     }
     cout << endl;
+}
+
+int addUpAsBinary(int first, int second)
+{
+    int result = first;
+
+    while (second != 0)
+    {
+        result = first ^ second;
+
+        second = (first & second) << 1;
+        first = result;
+    }
+
+    return result;
 }
