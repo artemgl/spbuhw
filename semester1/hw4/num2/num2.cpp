@@ -4,8 +4,6 @@
 #include "phonebook.h"
 using namespace std;
 
-void fillPhoneBook(List *list, char const fileName[]);
-
 int main()
 {
     char const fileName[] = {"file.txt"};
