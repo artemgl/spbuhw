@@ -3,6 +3,11 @@
 #include <fstream>
 using namespace std;
 
+void addNote(List *list, char name[], char number[])
+{
+    addElement(list, name, number);
+}
+
 int length(char inputLine[])
 {
     int result = 0;
@@ -59,9 +64,52 @@ void printNumber(List *list, char name[])
     }
 }
 
+void copyFromFile(List *list, char const fileName[])
+{
+    ifstream fin(fileName);
+
+    char name[maxLength] = "";
+    char number[maxLength] = "";
+
+    char currentSymbol = '\0';
+    fin.get(currentSymbol);
+    while (!fin.eof())
+    {
+        for (int i = 0; i < maxLength; i++)
+        {
+            name[i] = '\0';
+            number[i] = '\0';
+        }
+
+        currentSymbol = '\0';
+        int i = 0;
+        while (currentSymbol != '-')
+        {
+            fin.get(currentSymbol);
+            name[i++] = currentSymbol;
+        }
+        name[i - 1] = '\0';
+
+        currentSymbol = '\0';
+        i = 0;
+        while (currentSymbol != ';')
+        {
+            fin.get(currentSymbol);
+            number[i++] = currentSymbol;
+        }
+        number[i - 1] = '\0';
+
+        addElement(list, name, number);
+
+        fin.get(currentSymbol);
+    }
+
+    fin.close();
+}
+
 void saveInFile(List *list, char const fileName[])
 {
-    ofstream fout(fileName, ios::app);
+    ofstream fout(fileName);
 
     ListElement *current = list->first;
     while (current)

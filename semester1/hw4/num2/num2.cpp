@@ -17,10 +17,8 @@ int main()
     cout << "3 - find name" << endl;
     cout << "4 - save in the file" << endl;
 
-    List *fileList = createList();
-    fillPhoneBook(fileList, fileName);
-
-    List *extraList = createList();
+    List *list = createList();
+    copyFromFile(list, fileName);
 
     int input = 0;
     do
@@ -39,7 +37,7 @@ int main()
                 char number[maxLength] = "";
                 cin >> number;
 
-                addNote(extraList, name, number);
+                addNote(list, name, number);
 
                 cout << "The note added successfully" << endl;
                 break;
@@ -50,7 +48,7 @@ int main()
                 char name[maxLength] = "";
                 cin >> name;
 
-                printNumber(fileList, name);
+                printNumber(list, name);
                 break;
             }
             case 3:
@@ -59,13 +57,12 @@ int main()
                 char number[maxLength] = "";
                 cin >> number;
 
-                printName(fileList, number);
+                printName(list, number);
                 break;
             }
             case 4:
             {
-                saveInFile(extraList, fileName);
-                mergeLists(fileList, extraList);
+                saveInFile(list, fileName);
 
                 cout << "Data saved successfully" << endl;
                 break;
@@ -74,51 +71,7 @@ int main()
     }
     while (input);
 
-    deleteList(fileList);
-    deleteList(extraList);
+    deleteList(list);
 
     return 0;
-}
-
-void fillPhoneBook(List *list, char const fileName[])
-{
-    ifstream fin(fileName);
-
-    char name[maxLength] = "";
-    char number[maxLength] = "";
-
-    char currentSymbol = '\0';
-    fin.get(currentSymbol);
-    while (!fin.eof())
-    {
-        for (int i = 0; i < maxLength; i++)
-        {
-            name[i] = '\0';
-            number[i] = '\0';
-        }
-
-        currentSymbol = '\0';
-        int i = 0;
-        while (currentSymbol != '-')
-        {
-            fin.get(currentSymbol);
-            name[i++] = currentSymbol;
-        }
-        name[i - 1] = '\0';
-
-        currentSymbol = '\0';
-        i = 0;
-        while (currentSymbol != ';')
-        {
-            fin.get(currentSymbol);
-            number[i++] = currentSymbol;
-        }
-        number[i - 1] = '\0';
-
-        addNote(list, name, number);
-
-        fin.get(currentSymbol);
-    }
-
-    fin.close();
 }

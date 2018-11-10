@@ -20,7 +20,7 @@ void deleteList(List *list)
     delete list;
 }
 
-void addNote(List *list, char name[maxLength], char number[maxLength])
+void addElement(List *list, char name[maxLength], char number[maxLength])
 {
     if (list->first)
     {
@@ -51,27 +51,6 @@ void addNote(List *list, char name[maxLength], char number[maxLength])
         list->first->next = nullptr;
     }
 }
-
-void mergeLists(List *list, List *extraList)
-{
-    if (list->first)
-    {
-        ListElement *current = list->first;
-        while (current->next)
-        {
-            current = current->next;
-        }
-
-        current->next = extraList->first;
-    }
-    else
-    {
-        list->first = extraList->first;
-    }
-
-    extraList->first = nullptr;
-}
-
 
 void printList(List *list)
 {

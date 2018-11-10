@@ -17,6 +17,5 @@ struct List
 List *createList();
 void deleteList(List *list);
 
-void mergeLists(List *list, List *extraList);
-void addNote(List *list, char name[], char number[]);
+void addElement(List *list, char name[], char number[]);
 void printList(List *list);
