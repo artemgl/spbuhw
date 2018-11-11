@@ -170,8 +170,9 @@ void removeElement(Node *&node, int value)
                 }
                 else
                 {
+                    Node *right = current->rightChild;
                     delete previous->rightChild;
-                    previous->rightChild = nullptr;
+                    previous->rightChild = right;
                 }
             }
             else
