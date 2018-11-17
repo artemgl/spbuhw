@@ -72,49 +72,60 @@ void addElement(Tree *tree, int value)
     }
 }
 
-void removeElement(Node *&node, int value)
+void removeElement(Node *&node)
 {
-    if (value == node->value)
+    if (node->leftChild)
     {
-        if (node->leftChild)
+        if (node->rightChild)
         {
-            if (node->rightChild)
+            Node *current = node->rightChild;
+            Node *previous = node;
+
+            while (current->leftChild)
             {
-                Node *left = node->leftChild;
-                Node *right = node->rightChild;
+                previous = current;
+                current = current->leftChild;
+            }
 
-                delete node;
-                node = right;
+            swap(node->value, current->value);
 
-                Node *current = node;
-                while (current->leftChild)
-                {
-                    current = current->leftChild;
-                }
-
-                current->leftChild = left;
+            if (previous == node)
+            {
+                removeElement(previous->rightChild);
             }
             else
             {
-                Node *left = node->leftChild;
-                delete node;
-                node = left;
+                removeElement(previous->leftChild);
             }
         }
         else
         {
-            if (node->rightChild)
-            {
-                Node *right = node->rightChild;
-                delete node;
-                node = right;
-            }
-            else
-            {
-                delete node;
-                node = nullptr;
-            }
+            Node *left = node->leftChild;
+            delete node;
+            node = left;
         }
+    }
+    else
+    {
+        if (node->rightChild)
+        {
+            Node *right = node->rightChild;
+            delete node;
+            node = right;
+        }
+        else
+        {
+            delete node;
+            node = nullptr;
+        }
+    }
+}
+
+void removeElement(Node *&node, int value)
+{
+    if (value == node->value)
+    {
+        removeElement(node);
 
         return;
     }
