@@ -145,57 +145,54 @@ void addElement(Tree *tree, int value)
     }
 }
 
+void removeElement(Node *&node, int value);
+
+void removeElement(Node *&node)
+{
+    if (node->leftChild)
+    {
+        if (node->rightChild)
+        {
+            Node *current = node->rightChild;
+
+            while (current->leftChild)
+            {
+                current = current->leftChild;
+            }
+
+            swap(node->value, current->value);
+
+            removeElement(node->rightChild, current->value);
+            node = balance(node);
+        }
+        else
+        {
+            Node *left = node->leftChild;
+            delete node;
+            node = left;
+        }
+    }
+    else
+    {
+        if (node->rightChild)
+        {
+            Node *right = node->rightChild;
+            delete node;
+            node = right;
+        }
+        else
+        {
+            delete node;
+            node = nullptr;
+        }
+    }
+}
+
 void removeElement(Node *&node, int value)
 {
     if (value == node->value)
     {
-        if (node->leftChild)
-        {
-            if (node->rightChild)
-            {
-                Node *current = node->rightChild;
-                Node *previous = node;
-                while (current->leftChild)
-                {
-                    previous = current;
-                    current = current->leftChild;
-                }
-
-                swap(node->value, current->value);
-
-                if (previous != node)
-                {
-                    delete previous->leftChild;
-                    previous->leftChild = nullptr;
-                }
-                else
-                {
-                    Node *right = current->rightChild;
-                    delete previous->rightChild;
-                    previous->rightChild = right;
-                }
-            }
-            else
-            {
-                Node *left = node->leftChild;
-                delete node;
-                node = left;
-            }
-        }
-        else
-        {
-            if (node->rightChild)
-            {
-                Node *right = node->rightChild;
-                delete node;
-                node = right;
-            }
-            else
-            {
-                delete node;
-                node = nullptr;
-            }
-        }
+        removeElement(node);
 
         return;
     }
