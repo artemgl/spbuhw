@@ -72,6 +72,8 @@ void addElement(Tree *tree, int value)
     }
 }
 
+void removeElement(Node *&node, int value);
+
 void removeElement(Node *&node)
 {
     if (node->leftChild)
@@ -79,24 +81,15 @@ void removeElement(Node *&node)
         if (node->rightChild)
         {
             Node *current = node->rightChild;
-            Node *previous = node;
 
             while (current->leftChild)
             {
-                previous = current;
                 current = current->leftChild;
             }
 
             swap(node->value, current->value);
 
-            if (previous == node)
-            {
-                removeElement(previous->rightChild);
-            }
-            else
-            {
-                removeElement(previous->leftChild);
-            }
+            removeElement(node->rightChild, current->value);
         }
         else
         {
