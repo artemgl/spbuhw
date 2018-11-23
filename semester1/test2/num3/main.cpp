@@ -32,7 +32,6 @@ int main()
         if (isdigit(symbol))
         {
             int currentNumber = readNumber(symbol, f);
-            cout << "ff ";
 
             if (currentNumber < firstNumber)
             {
@@ -51,10 +50,6 @@ int main()
             }
         }
     }
-
-    printList(smallerList);
-    printList(middleList);
-    printList(biggerList);
 
     f.close();
 
