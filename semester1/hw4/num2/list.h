@@ -2,17 +2,8 @@
 
 int const maxLength = 256;
 
-struct ListElement
-{
-    char name[maxLength];
-    char number[maxLength];
-    ListElement *next;
-};
-
-struct List
-{
-    ListElement *first;
-};
+struct ListElement;
+struct List;
 
 List *createList();
 void deleteList(List *list);

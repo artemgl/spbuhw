@@ -2,6 +2,18 @@
 #include "list.h"
 using namespace std;
 
+struct ListElement
+{
+    char name[maxLength];
+    char number[maxLength];
+    ListElement *next;
+};
+
+struct List
+{
+    ListElement *first;
+};
+
 List *createList()
 {
     return new List {nullptr};

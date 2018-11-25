@@ -1,7 +1,20 @@
 #include "list.h"
+#include "phonebook.h"
 #include <iostream>
 #include <fstream>
 using namespace std;
+
+struct ListElement
+{
+    char name[maxLength];
+    char number[maxLength];
+    ListElement *next;
+};
+
+struct List
+{
+    ListElement *first;
+};
 
 void addNote(List *list, char name[], char number[])
 {
@@ -41,26 +54,40 @@ bool isEqual(char firstLine[], char secondLine[])
 void printName(List *list, char number[])
 {
     ListElement *current = list->first;
+    bool exists = false;
     while (current)
     {
         if (isEqual(current->number, number))
         {
             cout << current->name << endl;
+            exists = true;
         }
         current = current->next;
+    }
+
+    if (!exists)
+    {
+        cout << "Not found" << endl;
     }
 }
 
 void printNumber(List *list, char name[])
 {
     ListElement *current = list->first;
+    bool exists = false;
     while (current)
     {
         if (isEqual(current->name, name))
         {
             cout << current->number << endl;
+            exists = true;
         }
         current = current->next;
+    }
+
+    if (!exists)
+    {
+        cout << "Not found" << endl;
     }
 }
 
