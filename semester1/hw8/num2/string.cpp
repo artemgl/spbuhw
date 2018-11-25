@@ -1,23 +1,19 @@
 #include "string.h"
-
-void addSymbol(Symbol *&currentSymbol, char symbol)
-{
-    if (!currentSymbol)
-    {
-        currentSymbol = new Symbol {symbol, nullptr};
-        return;
-    }
-
-    addSymbol(currentSymbol->next, symbol);
-}
+#include <iostream>
 
 String *createString(char string[])
 {
     String *newString = new String {};
-
+    newString->length = 0;
     for (int i = 0; string[i] != '\0'; i++)
     {
-        addSymbol(newString->firstSymbol, string[i]);
+        newString->length++;
+    }
+
+    newString->symbols = new char[newString->length] {};
+    for (int i = 0; i < newString->length; i++)
+    {
+        newString->symbols[i] = string[i];
     }
 
     return newString;
@@ -25,139 +21,83 @@ String *createString(char string[])
 
 void deleteString(String *string)
 {
-    Symbol *current = string->firstSymbol;
-    while (current)
-    {
-        string->firstSymbol = current->next;
-        delete current;
-        current = string->firstSymbol;
-    }
-
+    delete string->symbols;
     delete string;
 }
 
 bool isEmpty(String *string)
 {
-    return !string->firstSymbol;
-}
-
-String *clone(String *string)
-{
-    String *newString = createString("");
-    Symbol *current = string->firstSymbol;
-
-    while (current)
-    {
-        addSymbol(newString->firstSymbol, current->symbol);
-        current = current->next;
-    }
-
-    return newString;
+    return ((string->length == 0) ? true : false);
 }
 
 String *copy(String *string, int index, int countOfSymbols)
 {
-    String *newString = createString("");
-    Symbol *current = string->firstSymbol;
-
-    for (int i = 0; i < index; i++)
-    {
-        current = current->next;
-    }
-
+    String *newString = new String {};
+    newString->symbols = new char[string->length] {};
     for (int i = 0; i < countOfSymbols; i++)
     {
-        addSymbol(newString->firstSymbol, current->symbol);
-        current = current->next;
+        newString->symbols[i] = string->symbols[i + index];
     }
+
+    newString->length = countOfSymbols;
 
     return newString;
 }
 
+String *clone(String *string)
+{
+    return copy(string, 0, string->length);
+}
+
 void concate(String *string, String *argument)
 {
-    String *extraString = clone(argument);
-
-    if (isEmpty(string))
+    for (int i = 0; i < argument->length; i++)
     {
-        string->firstSymbol = extraString->firstSymbol;
+        string->symbols[string->length + i] = argument->symbols[i];
     }
-    else
-    {
-        Symbol *current = string->firstSymbol;
-
-        while (current->next)
-        {
-            current = current->next;
-        }
-
-        current->next = extraString->firstSymbol;
-    }
-
-    delete extraString;
+    string->length += argument->length;
 }
 
 int length(String *string)
 {
-    if (isEmpty(string))
+    return string->length;
+}
+
+bool isEqual(String *firstString, String *secondString)
+{
+    if (firstString->length != secondString->length)
     {
-        return 0;
+        return false;
     }
 
-    Symbol *current = string->firstSymbol;
-
-    int result = 1;
-    while (current->next)
+    for (int i = 0; i < firstString->length; i++)
     {
-        current = current->next;
-        result++;
+        if (firstString->symbols[i] != secondString->symbols[i])
+        {
+            return false;
+        }
+    }
+
+    return true;
+}
+
+char *represent(String *string)
+{
+    char *result = new char[string->length] {};
+    for (int i = 0; i < string->length; i++)
+    {
+        result[i] = string->symbols[i];
     }
 
     return result;
 }
 
-char returnSymbol(String *string, int index)
+void printString(String *string)
 {
-    Symbol *current = string->firstSymbol;
-
-    for (int i = 0; i < index; i++)
+    for (int i = 0; i < string->length; i++)
     {
-        current = current->next;
+        std::cout << string->symbols[i];
     }
 
-    return current->symbol;
-}
-
-bool isEqual(String *firstString, String *secondString)
-{
-    int lengthOfString = length(firstString);
-    if (lengthOfString == length(secondString))
-    {
-        for (int i = 0; i < lengthOfString; i++)
-        {
-            if (returnSymbol(firstString, i) != returnSymbol(secondString, i))
-            {
-                return false;
-            }
-        }
-
-        return true;
-    }
-
-    return false;
-}
-
-char *represent(String *string)
-{
-    int lengthOfString = length(string);
-    char *newString = new char[lengthOfString] {};
-
-    for (int i = 0; i < lengthOfString; i++)
-    {
-        newString[i] = returnSymbol(string, i);
-    }
-
-    newString[lengthOfString] = '\0';
-
-    return newString;
+    std::cout << std::endl;
 }

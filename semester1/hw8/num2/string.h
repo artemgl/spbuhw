@@ -1,14 +1,9 @@
 #pragma once
 
-struct Symbol
-{
-    char symbol;
-    Symbol *next;
-};
-
 struct String
 {
-    Symbol *firstSymbol;
+    int length;
+    char *symbols;
 };
 
 String *createString(char string[]);
@@ -23,6 +18,6 @@ bool isEmpty(String *string);
 
 int length(String *string);
 
-char returnSymbol(String *string, int index);
-
 char *represent(String *string);
+
+void printString(String *string);
