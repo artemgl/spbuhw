@@ -8,7 +8,7 @@ HashTable *createHashTable()
     HashTable *table = new HashTable {};
 
     table->capacity = capacity;
-    table ->size = 0;
+    table->size = 0;
 
     table->buckets = new List *[capacity] {};
 
