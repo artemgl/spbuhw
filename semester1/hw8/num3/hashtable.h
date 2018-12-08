@@ -18,6 +18,8 @@ struct HashTable
 HashTable *createHashTable();
 void deleteHashTable(HashTable *table);
 
+bool existsString(HashTable *table, String *string);
+
 double loadFactor(HashTable *table);
 
 int hash(String *string, int modulo);

@@ -21,7 +21,7 @@ String *createString(char string[])
 
 void deleteString(String *string)
 {
-    delete string->symbols;
+    delete[] string->symbols;
     delete string;
 }
 
@@ -51,6 +51,16 @@ String *clone(String *string)
 
 void concate(String *string, String *argument)
 {
+    char *newSymbols = new char[string->length + argument->length] {};
+
+    for (int i = 0; i < string->length; i++)
+    {
+        newSymbols[i] = string->symbols[i];
+    }
+
+    delete[] string->symbols;
+    string->symbols = newSymbols;
+
     for (int i = 0; i < argument->length; i++)
     {
         string->symbols[string->length + i] = argument->symbols[i];

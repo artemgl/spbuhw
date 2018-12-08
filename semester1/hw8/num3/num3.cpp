@@ -30,7 +30,7 @@ int main()
     cout << "Amount of words: " << amountOfWords(table) << endl;
     cout << "Amount of empty buckets: " << amountOfEmptyBuckets(table) << endl;
     cout << "Max amount of attempts: " << maxAmountOfAttempts(table) << endl;
-    cout << "Chains with max amount of words:" << endl;
+    cout << "Chains with max amount of attempts:" << endl;
     printWordsWithMaxAmountOfAttempts(table);
 
     deleteHashTable(table);

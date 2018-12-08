@@ -8,13 +8,7 @@ HashTable *createHashTable(int capacity)
 
     table->capacity = capacity;
     table->size = 0;
-
     table->buckets = new Bucket *[capacity] {};
-
-    for (int i = 0; i < capacity; i++)
-    {
-        table->buckets[i] = nullptr;
-    }
 
     return table;
 }
@@ -35,7 +29,7 @@ void deleteHashTable(HashTable *table)
         }
     }
 
-    delete table->buckets;
+    delete[] table->buckets;
     delete table;
 }
 
@@ -48,12 +42,11 @@ int hash(String *string, int modulo)
 {
     int p = 13;
     int lengthOfString = length(string);
-    char *inputLine = represent(string);
 
     int result = 0;
     for (int i = 0; i < lengthOfString; i++)
     {
-        result = ((result * p) % modulo + inputLine[i]) % modulo;
+        result = ((result * p) % modulo + string->symbols[i]) % modulo;
     }
 
     return result;
@@ -159,10 +152,8 @@ void printChainOfWords(HashTable *table, String *string)
     {
         newIndex = (newIndex + amountOfAttempts++) % table->capacity;
 
-        char *currentWord = represent(table->buckets[newIndex]->word);
-        currentWord[length(table->buckets[newIndex]->word)] = '\0';
-        std::cout << currentWord << std::endl;
-        delete[] currentWord;
+        printString(table->buckets[newIndex]->word);
+        std::cout << std::endl;
     }
     while (!isEqual(table->buckets[newIndex]->word, string));
 }
@@ -173,7 +164,7 @@ void printWordsWithMaxAmountOfAttempts(HashTable *table)
 
     for (int i = 0; i < table->capacity; i++)
     {
-        if ((table->buckets[i] != nullptr) && (table->buckets[i]->amountOfAttempts == maxAmount))
+        if ((table->buckets[i]) && (table->buckets[i]->amountOfAttempts == maxAmount))
         {
             printChainOfWords(table, table->buckets[i]->word);
             std::cout << std::endl;
@@ -195,4 +186,17 @@ void printHashTable(HashTable *table)
             std::cout << '-' << std::endl;
         }
     }
+}
+
+bool existsString(HashTable *table, String *string)
+{
+    for (int i = 0; i < table->capacity; i++)
+    {
+        if (isEqual(string, table->buckets[i]->word))
+        {
+            return true;
+        }
+    }
+
+    return false;
 }
