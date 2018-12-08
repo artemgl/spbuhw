@@ -2,6 +2,8 @@
 #include "string.h"
 using namespace std;
 
+const int maxLength = 256;
+
 int main()
 {
     cout << "Enter:" << endl;
@@ -24,13 +26,14 @@ int main()
         case 1:
         {
             cout << "The string: ";
-            char inputLine[] = "";
+            char inputLine[maxLength] {};
             cin >> inputLine;
             String *currentString = createString(inputLine);
 
             cout << "Cloned string: ";
             String *clonedString = clone(currentString);
             printString(clonedString);
+            cout << endl;
 
             deleteString(clonedString);
             deleteString(currentString);
@@ -39,7 +42,7 @@ int main()
         case 2:
         {
             cout << "The string: ";
-            char inputLine[] = "";
+            char inputLine[maxLength] {};
             cin >> inputLine;
             String *currentString = createString(inputLine);
 
@@ -54,6 +57,7 @@ int main()
             cout << "Substring: ";
             String *copiedString = copy(currentString, firstIndex, lastIndex - firstIndex + 1);
             printString(copiedString);
+            cout << endl;
 
             deleteString(copiedString);
             deleteString(currentString);
@@ -62,18 +66,19 @@ int main()
         case 3:
         {
             cout << "The string: ";
-            char inputLine[] = "";
+            char inputLine[maxLength] {};
             cin >> inputLine;
             String *currentString = createString(inputLine);
 
             cout << "The string-argument: ";
-            char extraString[] = "";
+            char extraString[maxLength] {};
             cin >> extraString;
 
             String *argument = createString(extraString);
             cout << "Concatenated string: ";
             concate(currentString, argument);
             printString(currentString);
+            cout << endl;
 
             deleteString(argument);
             deleteString(currentString);
@@ -82,7 +87,7 @@ int main()
         case 4:
         {
             cout << "The string: ";
-            char inputLine[] = "";
+            char inputLine[maxLength] {};
             cin >> inputLine;
             String *currentString = createString(inputLine);
 
@@ -96,7 +101,7 @@ int main()
         case 5:
         {
             cout << "The string: ";
-            char inputLine[] = "";
+            char inputLine[maxLength] {};
             cin >> inputLine;
             String *currentString = createString(inputLine);
 
@@ -108,12 +113,12 @@ int main()
         case 6:
         {
             cout << "The string: ";
-            char inputLine[] = "";
+            char inputLine[maxLength] {};
             cin >> inputLine;
             String *currentString = createString(inputLine);
 
             cout << "The second string: ";
-            char extraString[] = "";
+            char extraString[maxLength] {};
             cin >> extraString;
 
             String *secondString = createString(extraString);
@@ -127,7 +132,7 @@ int main()
         case 7:
         {
             cout << "The string: ";
-            char inputLine[] = "";
+            char inputLine[maxLength] {};
             cin >> inputLine;
             String *currentString = createString(inputLine);
 
