@@ -41,5 +41,7 @@ int main()
         cout << i + 1 << ' ' << variant << endl;
     }
 
+    delete[] numbersOfCopiedWork;
+
     return 0;
 }
