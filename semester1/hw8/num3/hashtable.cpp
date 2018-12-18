@@ -194,13 +194,19 @@ void printHashTable(HashTable *table)
 
 bool existsString(HashTable *table, String *string)
 {
-    for (int i = 0; i < table->capacity; i++)
+    int step = 0;
+    int newIndex = hash(string, table->capacity);
+    do
     {
-        if (isEqual(string, table->buckets[i]->word))
+        newIndex = (newIndex + step) % table->capacity;
+        step += 5;
+
+        if (!table->buckets[newIndex])
         {
-            return true;
+            return false;
         }
     }
+    while (!isEqual(table->buckets[newIndex]->word, string));
 
-    return false;
+    return true;
 }
