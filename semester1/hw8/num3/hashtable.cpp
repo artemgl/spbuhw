@@ -75,6 +75,7 @@ void addElement(HashTable *&table, String *string)
 {
     int newIndex = hash(string, table->capacity);
     int amountOfAttempts = 0;
+    int step = 0;
     while (table->buckets[newIndex])
     {
         if (isEqual(table->buckets[newIndex]->word, string))
@@ -82,8 +83,9 @@ void addElement(HashTable *&table, String *string)
             table->buckets[newIndex]->amountOfWords++;
             return;
         }
-        amountOfAttempts += 5;
-        newIndex = (newIndex + amountOfAttempts) % table->capacity;
+        step += 5;
+        amountOfAttempts++;
+        newIndex = (newIndex + step) % table->capacity;
     }
 
     table->buckets[newIndex] = new Bucket {clone(string), 1, amountOfAttempts + 1};
@@ -147,12 +149,12 @@ int amountOfEmptyBuckets(HashTable *table)
 
 void printChainOfWords(HashTable *table, String *string)
 {
-    int amountOfAttempts = 0;
+    int step = 0;
     int newIndex = hash(string, table->capacity);
     do
     {
-        newIndex = (newIndex + amountOfAttempts) % table->capacity;
-        amountOfAttempts += 5;
+        newIndex = (newIndex + step) % table->capacity;
+        step += 5;
 
         printString(table->buckets[newIndex]->word);
         std::cout << std::endl;
