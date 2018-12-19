@@ -18,14 +18,11 @@ int main()
 
     int patternLength = length(pattern);
 
-    int pForUsableCalculation = 1;
     int patternHash = 0;
     for (int i = 0; i < patternLength; i++)
     {
         patternHash = ((patternHash * p) % modulo + pattern[i]) % modulo;
-        pForUsableCalculation *= p;
     }
-    pForUsableCalculation /= p;
 
     ifstream fin(fileName);
 
@@ -46,19 +43,19 @@ int main()
             cout << index << endl;
         }
 
-        hash = ((hash - (substring[0] * pForUsableCalculation) % modulo) * p) % modulo;
-        if (hash < 0)
-        {
-            hash += modulo;
-        }
-
         for (int i = 0; i < patternLength - 1; i++)
         {
             swap(substring[i], substring[i + 1]);
         }
 
         fin.get(substring[patternLength - 1]);
-        hash = (hash + substring[patternLength - 1]) % modulo;
+
+        hash = 0;
+        for (int i = 0; i < patternLength; i++)
+        {
+            hash = ((hash * p) % modulo + substring[i]) % modulo;
+        }
+
         index++;
     }
     while (!fin.eof());
