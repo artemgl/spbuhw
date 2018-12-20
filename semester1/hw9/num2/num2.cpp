@@ -1,6 +1,6 @@
 #include <iostream>
 #include <fstream>
-#include "list.h"
+#include "priorityqueue.h"
 #include "hashtable.h"
 using namespace std;
 
@@ -9,7 +9,7 @@ int main()
     const char fileForReadingName[] = "input.txt";
     const char fileForWritingName[] = "output.txt";
 
-    List *list = createList();
+    PriotityQueue *priorityQueue = createPriorityQueue();
 
     ifstream file(fileForReadingName);
 
@@ -17,15 +17,18 @@ int main()
     file.get(symbol);
     while (!file.eof())
     {
-        addElement(list, symbol);
+        if (symbol != '\n')
+        {
+            addElement(priorityQueue, symbol);
+        }
         file.get(symbol);
     }
 
     file.close();
 
-    printList(list);
+    printPriorityQueue(priorityQueue);
 
-    Tree *tree = buildTree(list);
+    Tree *tree = buildTree(priorityQueue);
     printTreeInFile(tree, fileForWritingName);
 
     HashTable *table = buildHashTable(tree);

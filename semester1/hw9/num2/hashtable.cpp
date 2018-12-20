@@ -139,6 +139,10 @@ String *returnString(HashTable *table, char symbol)
     do
     {
         newIndex = (newIndex + amountOfAttempts++) % table->capacity;
+        if (!table->buckets[newIndex])
+        {
+            return nullptr;
+        }
     }
     while (table->buckets[newIndex]->symbol != symbol);
 

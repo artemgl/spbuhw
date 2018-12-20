@@ -1,32 +1,32 @@
 #include <iostream>
-#include "list.h"
+#include "priorityqueue.h"
 #include "tree.h"
 using namespace std;
 
-List *createList()
+PriotityQueue *createPriorityQueue()
 {
-    return new List {nullptr};
+    return new PriotityQueue {nullptr};
 }
 
-void deleteList(List *list)
+void deletePriorityQueue(PriotityQueue *priorityQueue)
 {
-    ListElement *current = list->first;
+    PriorityQueueElement *current = priorityQueue->first;
     while (current)
     {
-        list->first = current->next;
+        priorityQueue->first = current->next;
         deleteTree(current->tree);
         delete current;
-        current = list->first;
+        current = priorityQueue->first;
     }
 
-    delete list;
+    delete priorityQueue;
 }
 
-void addElement(List *list, char symbol)
+void addElement(PriotityQueue *priorityQueue, char symbol)
 {
-    if (exists(list, symbol))
+    if (exists(priorityQueue, symbol))
     {
-        ListElement *current = list->first;
+        PriorityQueueElement *current = priorityQueue->first;
         while (!exists(current->tree, symbol))
         {
             current = current->next;
@@ -55,24 +55,24 @@ void addElement(List *list, char symbol)
     Tree *newTree = createTree();
     addElement(newTree, symbol);
 
-    list->first = new ListElement {1, newTree, list->first};
+    priorityQueue->first = new PriorityQueueElement {1, newTree, priorityQueue->first};
 }
 
-Tree *buildTree(List *list)
+Tree *buildTree(PriotityQueue *priorityQueue)
 {
-    while (list->first->next)
+    while (priorityQueue->first->next)
     {
-        ListElement *first = list->first;
-        ListElement *second = first->next;
+        PriorityQueueElement *first = priorityQueue->first;
+        PriorityQueueElement *second = first->next;
 
         second->priority += first->priority;
 
         second->tree->root = new Node {'\0', first->tree->root, second->tree->root};
         delete first->tree;
         delete first;
-        list->first = second;
+        priorityQueue->first = second;
 
-        ListElement *current = list->first;
+        PriorityQueueElement *current = priorityQueue->first;
         while (current->next)
         {
             if (current->priority > current->next->priority)
@@ -89,15 +89,15 @@ Tree *buildTree(List *list)
         }
     }
 
-    Tree *newTree = list->first->tree;
-    delete list->first;
-    delete list;
+    Tree *newTree = priorityQueue->first->tree;
+    delete priorityQueue->first;
+    delete priorityQueue;
     return newTree;
 }
 
-void printList(List *list)
+void printPriorityQueue(PriotityQueue *priorityQueue)
 {
-    ListElement *current = list->first;
+    PriorityQueueElement *current = priorityQueue->first;
 
     while (current)
     {
@@ -108,14 +108,14 @@ void printList(List *list)
     }
 }
 
-bool isEmpty(List *list)
+bool isEmpty(PriotityQueue *priorityQueue)
 {
-    return !(list->first);
+    return !(priorityQueue->first);
 }
 
-bool exists(List *list, char symbol)
+bool exists(PriotityQueue *priorityQueue, char symbol)
 {
-    ListElement *current = list->first;
+    PriorityQueueElement *current = priorityQueue->first;
 
     while (current)
     {
