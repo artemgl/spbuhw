@@ -17,10 +17,7 @@ int main()
     file.get(symbol);
     while (!file.eof())
     {
-        if (symbol != '\n')
-        {
-            addElement(priorityQueue, symbol);
-        }
+        addElement(priorityQueue, symbol);
         file.get(symbol);
     }
 

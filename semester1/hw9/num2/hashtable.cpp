@@ -127,6 +127,7 @@ HashTable *buildHashTable(Tree *tree)
 
         String *code = createString("");
         buildHashTable(newTable, tree->root, code);
+        deleteString(code);
     }
 
     return newTable;
