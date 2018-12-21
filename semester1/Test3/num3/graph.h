@@ -14,4 +14,7 @@ void addRelation(Graph *graph, int firstTop, int secondTop, int edge);
 
 Graph *readFromFile(const char fileName[]);
 
+void printGraph(Graph *graph);
+void printMatrix(Graph *graph);
+
 void printEspecialTops(Graph *graph);

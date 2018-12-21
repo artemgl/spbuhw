@@ -60,11 +60,45 @@ Graph *readFromFile(const char fileName[])
     return new Graph {topsAmount, edgesAmount, numbers};
 }
 
-bool allVisited(Graph *graph, int top, bool *visited)
+void printGraph(Graph *graph)
+{
+    for (int i = 0; i < graph->edgesAmount; i++)
+    {
+        for (int j = 0; j < graph->topsAmount; j++)
+        {
+            if (graph->matrix[j][i] > 0)
+            {
+                cout << j;
+            }
+        }
+        cout << "->";
+        for (int j = 0; j < graph->topsAmount; j++)
+        {
+            if (graph->matrix[j][i] < 0)
+            {
+                cout << j << endl;
+            }
+        }
+    }
+}
+
+void printMatrix(Graph *graph)
 {
     for (int i = 0; i < graph->topsAmount; i++)
     {
-        if (i != top && visited[i] == false)
+        for (int j = 0; j < graph->edgesAmount; j++)
+        {
+            cout << graph->matrix[i][j] << ' ';
+        }
+        cout << endl;
+    }
+}
+
+bool allVisited(bool *visited, int size)
+{
+    for (int i = 0; i < size; i++)
+    {
+        if (!visited[i])
         {
             return false;
         }
@@ -73,18 +107,27 @@ bool allVisited(Graph *graph, int top, bool *visited)
     return true;
 }
 
-void printEspecialTops(Graph *graph, int top, bool *visited)
+void nullArray(bool *visited, int size)
+{
+    for (int i = 0; i < size; i++)
+    {
+        visited[i] = false;
+    }
+}
+
+void pointOutTops(Graph *graph, int top, bool *visited)
 {
     for (int i = 0; i < graph->edgesAmount; i++)
     {
-        if (graph->matrix[top][i] == 1)
+        if (graph->matrix[top][i] < 0)
         {
             for (int j = 0; j < graph->topsAmount; j++)
             {
-                if (graph->matrix[j][i] == -1)
+                if (graph->matrix[j][i] > 0 && !visited[j])
                 {
                     visited[j] = true;
-                    printEspecialTops(graph, j, visited);
+                    pointOutTops(graph, j, visited);
+                    break;
                 }
             }
         }
@@ -94,19 +137,17 @@ void printEspecialTops(Graph *graph, int top, bool *visited)
 void printEspecialTops(Graph *graph)
 {
     bool *visited = new bool[graph->topsAmount] {};
+
     for (int i = 0; i < graph->topsAmount; i++)
     {
-        printEspecialTops(graph, i, visited);
-        if (allVisited(graph, i, visited))
+        visited[i] = true;
+        pointOutTops(graph, i, visited);
+        if (allVisited(visited, graph->topsAmount))
         {
             cout << i << endl;
         }
-
-        for (int i = 0; i < graph->topsAmount; i++)
-        {
-            visited[i] = false;
-        }
-
+        nullArray(visited, graph->topsAmount);
     }
+
     delete[] visited;
 }
