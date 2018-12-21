@@ -1,5 +1,4 @@
 #include <iostream>
-#include <stdio.h>
 #include <fstream>
 using namespace std;
 
@@ -14,7 +13,7 @@ int main()
 
     cout << "Enter the pattern: ";
     char *pattern = new char[maxLength] {};
-    gets(pattern);
+    cin >> pattern;
 
     int patternLength = length(pattern);
 
