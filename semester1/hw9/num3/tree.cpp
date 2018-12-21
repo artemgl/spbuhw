@@ -183,15 +183,20 @@ void decipherInFile(Tree *tree, const char fileForReadingName[], const char file
     char symbol = '\0';
     do
     {
+        do
+        {
+            fin.get(symbol);
+        }
+        while (symbol != '\n');
         fin.get(symbol);
     }
-    while (symbol != '\n');
+    while (symbol != '0' && symbol != '1');
+
 
     Node *current = tree->root;
 
     ofstream fout(fileForWritingName);
 
-    fin.get(symbol);
     while (!fin.eof())
     {
         if (symbol == '0')
