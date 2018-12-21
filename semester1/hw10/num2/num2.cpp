@@ -8,85 +8,90 @@ bool isEqual(char *firstString, char *secondString);
 int main()
 {
     const char fileName[] = "file.txt";
-    const int p = 3;
     const int maxLength = 256;
-
-    cout << "Enter the pattern: ";
-    char *pattern = new char[maxLength] {};
-    cin >> pattern;
-
-    int patternLength = length(pattern);
-
-    int pForUsableCalculate = 1;
-    int patternHash = 0;
-    for (int i = 0; i < patternLength; i++)
-    {
-        patternHash = patternHash * p + pattern[i];
-        pForUsableCalculate = pForUsableCalculate * p;
-    }
-    pForUsableCalculate /= p;
+    const int modulo = 997;
+    const int p = 3;
 
     ifstream fin(fileName);
 
-    int hash = 0;
+    char *pattern = new char[maxLength] {};
+    fin >> pattern;
+
+    int patternLength = length(pattern);
+    int patternHash = 0;
+    for (int i = 0; i < patternLength; i++)
+    {
+        patternHash = (patternHash * p + pattern[i]) % modulo;
+    }
+    int usableP = 1;
+    for (int i = 0; i < patternLength - 1; i++)
+    {
+        usableP = (usableP * p) % modulo;
+    }
+
+    fin.get();
     char *substring = new char[patternLength] {};
     for (int i = 0; i < patternLength; i++)
     {
         fin.get(substring[i]);
     }
+
+    int substringHash = 0;
     for (int i = 0; i < patternLength; i++)
     {
-        hash = hash * p + substring[i];
+        substringHash = (substringHash * p + substring[i]) % modulo;
     }
     substring[patternLength] = '\0';
 
     int index = 0;
     do
     {
-//        cout << hash << endl;
-        if (hash == patternHash && isEqual(pattern, substring))
+        if (substringHash == patternHash && isEqual(pattern, substring))
         {
             cout << index << endl;
         }
 
-        hash = (signed int)(hash - (substring[0] * pForUsableCalculate));
+        substringHash = (signed int)(substringHash - substring[0] * usableP);
+        while (substringHash < 0)
+        {
+            substringHash += modulo;
+        }
 
         for (int i = 0; i < patternLength - 1; i++)
         {
             swap(substring[i], substring[i + 1]);
         }
-
         fin.get(substring[patternLength - 1]);
 
-        hash = (hash * p + substring[patternLength - 1]);
+        substringHash = (substringHash * p + substring[patternLength - 1]) % modulo;
         index++;
     }
     while (!fin.eof());
 
     fin.close();
 
-    delete[] substring;
     delete[] pattern;
+    delete[] substring;
 
     return 0;
 }
 
 int length(char *string)
 {
-    int result = 0;
-    while (string[result++] != '\0');
-
-    return result - 1;
+    int result = -1;
+    while (string[++result] != '\0');
+    return result;
 }
 
 bool isEqual(char *firstString, char *secondString)
 {
-    if (length(firstString) != length(secondString))
+    int lengthOfString = length(firstString);
+    if (lengthOfString != length(secondString))
     {
         return false;
     }
 
-    for (int i = 0; i < length(firstString); i++)
+    for (int i = 0; i < lengthOfString; i++)
     {
         if (firstString[i] != secondString[i])
         {
