@@ -102,7 +102,7 @@ void fillPointListWithNeighbours(PointList *&neighbours, PointList *closed, Poin
     {
         for (int j = -1; j < 2; j++)
         {
-            if (i != 0 || j != 0)
+            if (abs(i + j) == 1)
             {
                 int currX = currentPoint->x + i;
                 int currY = currentPoint->y + j;
@@ -150,6 +150,11 @@ void processNeighbours(PointList *neighbours, PointList *opened, Point *currentP
 
 PointList *buildGraph(Map *map, Point *start, Point *end)
 {
+    if (map->matrix[end->x][end->y] || map->matrix[start->x][start->y])
+    {
+        return nullptr;
+    }
+
     PointList *opened = createPointList();
     PointList *closed = createPointList();
     Graph *ways = createGraph(map->columnsAmount * map->rowsAmount);
