@@ -166,9 +166,17 @@ Tree *buildTreeFromFile(const char fileName[])
     ifstream fin(fileName);
 
     Tree *newTree = createTree();
-    addElement(newTree, '\0');
 
-    fin.get();
+    char symbol = '\0';
+    fin.get(symbol);
+
+    if (symbol != '(')
+    {
+        addElement(newTree, '\0');
+        newTree->root->leftChild = new Node {symbol, nullptr, nullptr};
+        return newTree;
+    }
+
     newTree->root = buildTreeFromFile(fin);
 
     fin.close();
@@ -191,7 +199,6 @@ void decipherInFile(Tree *tree, const char fileForReadingName[], const char file
         fin.get(symbol);
     }
     while (symbol != '0' && symbol != '1');
-
 
     Node *current = tree->root;
 
