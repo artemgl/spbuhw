@@ -41,7 +41,7 @@ void deleteMap(Map *map)
     {
         delete[] map->matrix[i];
     }
-    delete map->matrix;
+    delete[] map->matrix;
     delete map;
 }
 
