@@ -1,5 +1,8 @@
 package com.artemchernikov.g144;
 
+/**
+ * A class describing stack
+ */
 public class Stack {
 
     private StackElement first;

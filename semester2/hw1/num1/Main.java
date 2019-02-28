@@ -38,8 +38,5 @@ public class Main {
                     break;
             }
         } while (input != 0);
-
-
-
     }
 }
