@@ -1,5 +1,7 @@
 package com.artemchernikov.g144;
 
+import java.util.Scanner;
+
 public class Main {
     public static void main(String[] argc) {
 
@@ -10,27 +12,28 @@ public class Main {
         System.out.println("3 - check if the value exists in the list");
         System.out.println("4 - print the list");
 
-        Stack NewList = new List();
+        List NewList = new List();
 
         Scanner in = new Scanner(System.in);
         int input = 0;
         do {
             input = in.nextInt();
+            int value = 0;
             switch (input) {
                 case 1:
                     System.out.println("Enter the value to add");
-                    int value = in.nextInt();
+                    value = in.nextInt();
                     NewList.addElement(value);
                     break;
                 case 2:
                     System.out.println("Enter the value to remove");
-                    int value = in.nextInt();
+                    value = in.nextInt();
                     NewList.removeElement(value);
                     break;
                 case 3:
                     System.out.println("Enter the value");
-                    int value = in.nextInt();
-                    System.out.println("This value" + (NewList.exists(value) ? "" : " doesn't") + " exists in the list");
+                    value = in.nextInt();
+                    System.out.println("This value" + (NewList.exists(value) ? " exists" : " doesn't exist") + " in the list");
                     break;
                 case 4:
                     NewList.print();
