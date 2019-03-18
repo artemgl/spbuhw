@@ -1,17 +1,22 @@
 package com.artemchernikov.g144;
 
-/**
- * A class describing stack
- */
+/**A class describing stack*/
 public class Stack {
 
     private StackElement first;
+    public int size;
+
+    public Stack() {
+        this.first = null;
+        this.size = 0;
+    }
 
     public int pop() {
         if (!isEmpty()) {
             int result = first.value;
             first = first.next;
 
+            this.size--;
             return result;
         }
 
@@ -19,14 +24,8 @@ public class Stack {
     }
 
     public void push(int value) {
-        if (first == null) {
-            first = new StackElement(value);
-            return;
-        }
-
-        StackElement current = first;
-        first = new StackElement(value);
-        first.next = current;
+        first = new StackElement(value, first);
+        this.size++;
     }
 
     public boolean isEmpty() {
@@ -34,14 +33,7 @@ public class Stack {
     }
 
     public int size() {
-        int result = 0;
-        StackElement current = first;
-        while (current != null) {
-            result++;
-            current = current.next;
-        }
-
-        return result;
+        return this.size;
     }
 
 }
