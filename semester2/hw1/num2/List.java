@@ -1,38 +1,33 @@
 package com.artemchernikov.g144;
 
-/**
- * A class describing singly linked list
- */
+/**A class describing singly linked list*/
 public class List {
 
     private ListElement first;
 
     public void addElement(int value) {
-        if (first == null) {
-            first = new ListElement(value);
-            return;
-        }
-
-        ListElement current = first;
-        first = new ListElement(value);
-        first.next = current;
+        first = new ListElement(value, first);
     }
 
     public void removeElement(int value) {
-        if (first.value == value) {
-            first = first.next;
-            return;
-        }
-
-        ListElement current = first;
-
-        while (current.next != null) {
-            if (current.next.value == value) {
-                current.next = current.next.next;
+        if (!isEmpty()) {
+            if (first.value == value) {
+                first = first.next;
                 return;
             }
 
-            current = current.next;
+            ListElement previous = first;
+            ListElement current = first.next;
+
+            while (current != null) {
+                if (current.value == value) {
+                    previous.next = current.next;
+                    return;
+                }
+
+                previous = current;
+                current = current.next;
+            }
         }
     }
 
@@ -46,6 +41,10 @@ public class List {
         }
 
         return false;
+    }
+
+    public boolean isEmpty() {
+        return first == null;
     }
 
     public void print() {
