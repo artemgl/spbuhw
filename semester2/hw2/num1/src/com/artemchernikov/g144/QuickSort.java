@@ -1,6 +1,6 @@
 package com.artemchernikov.g144;
 
-//A class describing quick sort
+/**A class describing quick sort*/
 public class QuickSort implements Sort {
 
     private void ascending(int[] numbers, int leftIndex, int rightIndex) {

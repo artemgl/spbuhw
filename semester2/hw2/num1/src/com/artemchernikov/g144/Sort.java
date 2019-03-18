@@ -1,9 +1,9 @@
 package com.artemchernikov.g144;
 
-//An interface describing sort
+/**An interface describing sort*/
 public interface Sort {
 
-    //Bubble sort
+    /**Bubble sort*/
     default void ascending(int[] numbers) {
         for (int i = 0; i < numbers.length - 1; i++) {
             for (int j = 0; j < numbers.length - 1 - i; j++) {

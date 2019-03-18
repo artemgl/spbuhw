@@ -1,6 +1,6 @@
 package com.artemchernikov.g144;
 
-//A class describing merge sort
+/**A class describing merge sort*/
 public class MergeSort implements Sort {
 
     private void ascending(int[] numbers, int firstIndex, int secondIndex) {

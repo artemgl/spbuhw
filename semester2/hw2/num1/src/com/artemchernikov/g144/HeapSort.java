@@ -1,6 +1,6 @@
 package com.artemchernikov.g144;
 
-//A class describing heap sort
+/**A class describing heap sort*/
 public class HeapSort implements Sort {
 
     public void ascending(int[] numbers) {
