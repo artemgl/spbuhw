@@ -4,7 +4,7 @@ package com.artemchernikov.g144;
 public class Stack {
 
     private StackElement first;
-    public int size;
+    private int size;
 
     public Stack() {
         this.first = null;
