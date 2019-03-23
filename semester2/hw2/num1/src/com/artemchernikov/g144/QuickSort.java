@@ -3,7 +3,7 @@ package com.artemchernikov.g144;
 /**A class describing quick sort*/
 public class QuickSort implements Sort {
 
-    private void ascending(int[] numbers, int leftIndex, int rightIndex) {
+    private void sort(int[] numbers, int leftIndex, int rightIndex) {
         if (leftIndex >= rightIndex) {
             return;
         }
@@ -22,12 +22,12 @@ public class QuickSort implements Sort {
             extraIndex += (int)Math.signum(mainIndex - extraIndex);
         }
 
-        ascending(numbers, leftIndex, mainIndex - 1);
-        ascending(numbers, mainIndex + 1, rightIndex);
+        sort(numbers, leftIndex, mainIndex - 1);
+        sort(numbers, mainIndex + 1, rightIndex);
     }
 
-    public void ascending(int[] numbers) {
-        ascending(numbers, 0, numbers.length - 1);
+    public void sort(int[] numbers) {
+        sort(numbers, 0, numbers.length - 1);
     }
 
 }

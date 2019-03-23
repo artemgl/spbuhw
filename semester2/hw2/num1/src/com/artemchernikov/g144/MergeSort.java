@@ -3,7 +3,7 @@ package com.artemchernikov.g144;
 /**A class describing merge sort*/
 public class MergeSort implements Sort {
 
-    private void ascending(int[] numbers, int firstIndex, int secondIndex) {
+    private void sort(int[] numbers, int firstIndex, int secondIndex) {
 
         int[] bufferArray = numbers.clone();
 
@@ -34,10 +34,10 @@ public class MergeSort implements Sort {
         }
     }
 
-    public void ascending(int[] numbers) {
+    public void sort(int[] numbers) {
         for (int i = 1; i < numbers.length; i *= 2) {
             for (int j = 0; j < numbers.length - i; j += 2 * i) {
-                ascending(numbers, j, j + i);
+                sort(numbers, j, j + i);
             }
         }
     }

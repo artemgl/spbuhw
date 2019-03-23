@@ -3,7 +3,7 @@ package com.artemchernikov.g144;
 /**A class describing heap sort*/
 public class HeapSort implements Sort {
 
-    public void ascending(int[] numbers) {
+    public void sort(int[] numbers) {
         int amountOfLevels = 0;
         for (int size = numbers.length; size > 1; size--) {
             amountOfLevels = 1;
