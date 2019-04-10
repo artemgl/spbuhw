@@ -3,20 +3,9 @@ package com.artemchernikov.g144;
 /**A class describing stack*/
 public class Stack {
 
-    /**A class describing element of stack*/
-    public class StackElement {
-        public StackElement(int value, StackElement next) {
-            this.value = value;
-            this.next = next;
-        }
-
-        public int value;
-        public StackElement next;
-    }
-
     private StackElement first;
-    private int size;
 
+    private int size;
     public Stack() {
         this.first = null;
         this.size = 0;
@@ -47,4 +36,14 @@ public class Stack {
         return this.size;
     }
 
+    /**A class describing element of stack*/
+    private class StackElement {
+        private StackElement(int value, StackElement next) {
+            this.value = value;
+            this.next = next;
+        }
+
+        private int value;
+        private StackElement next;
+    }
 }
