@@ -27,7 +27,7 @@ public class Main {
                     value = in.nextInt();
                     try {
                         newList.addElement(value);
-                    } catch (IllegalArgumentException exc) {
+                    } catch (AlreadyExistsElementException exc) {
                         System.out.println(exc.getMessage());
                     }
                     break;
@@ -36,7 +36,7 @@ public class Main {
                     value = in.nextInt();
                     try {
                         newList.removeElement(value);
-                    } catch (IllegalArgumentException exc) {
+                    } catch (NoElementException exc) {
                         System.out.println(exc.getMessage());
                     }
                     break;

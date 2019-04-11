@@ -1,28 +1,29 @@
 package com.artemchernikov.g144;
 
+class AlreadyExistsElementException extends IllegalArgumentException {
+    AlreadyExistsElementException(String message) {
+        super(message);
+    }
+}
+
+class NoElementException extends IllegalArgumentException {
+    NoElementException(String message) {
+        super(message);
+    }
+}
+
 /**A template class describing singly linked list*/
 public class UniqueList<T> {
 
-    /**A class describing element of singly linked list*/
-    private class ListElement {
-        private ListElement(T value, ListElement next) {
-            this.value = value;
-            this.next = next;
-        }
-
-        private T value;
-        private ListElement next;
-    }
-
     private ListElement first;
-    private int size;
 
+    private int size;
     public void addElement(T value) {
         if (!exists(value)) {
             first = new ListElement(value, first);
             this.size++;
         } else {
-            throw new IllegalArgumentException("List already contains this value: " + value);
+            throw new AlreadyExistsElementException("List already contains this value: " + value);
         }
     }
 
@@ -49,7 +50,7 @@ public class UniqueList<T> {
             }
         }
 
-        throw new IllegalArgumentException("List doesn't contain this value: " + value);
+        throw new NoElementException("List doesn't contain this value: " + value);
     }
 
     public T getElement(int index) throws IndexOutOfBoundsException {
@@ -92,5 +93,16 @@ public class UniqueList<T> {
             System.out.println(current.value);
             current = current.next;
         }
+    }
+
+    /**A class describing element of singly linked list*/
+    private class ListElement {
+        private ListElement(T value, ListElement next) {
+            this.value = value;
+            this.next = next;
+        }
+
+        private T value;
+        private ListElement next;
     }
 }
