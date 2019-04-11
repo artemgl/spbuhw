@@ -2,6 +2,7 @@ package com.artemchernikov.g144;
 
 import java.util.*;
 
+/**A class describing AVL-tree implemented on interface Collection*/
 public class AVLTree<E> implements Collection<E> {
 
     public AVLTree() {
@@ -38,16 +39,19 @@ public class AVLTree<E> implements Collection<E> {
         }
     }
 
+    /**A method returning true if received element exists in the tree and returns false otherwise*/
     @Override
     public boolean contains(Object o) {
         return contains(root, o);
     }
 
+    /**A method returning object of class AVLTreeIterator*/
     @Override
     public Iterator<E> iterator() {
         return new AVLTreeIterator();
     }
 
+    /**A method returning the array of elements of the tree*/
     @Override
     public Object[] toArray() {
         Object[] result = new Object[size];
@@ -58,6 +62,15 @@ public class AVLTree<E> implements Collection<E> {
         return result;
     }
 
+    /**
+     * A method writing elements of the tree into the received array
+     *
+     * If length of received array is shorter than size of the tree,
+     * method will return new array with length which equals the size
+     *
+     * If length of received array is longer than size of the tree,
+     * method will null array element after last element
+     * */
     @Override
     public <T> T[] toArray(T[] a) {
         if (a.length < size) {
@@ -152,6 +165,10 @@ public class AVLTree<E> implements Collection<E> {
         return true;
     }
 
+    /**
+     * A method adding received element to the tree
+     * Returns true if adding was successful and false otherwise
+     * */
     @Override
     public boolean add(E e) {
         if (root != null) {
@@ -213,6 +230,10 @@ public class AVLTree<E> implements Collection<E> {
         return node;
     }
 
+    /**
+     * A method removing received element from the tree
+     * Returns true if removing was successful and false otherwise
+     * */
     @Override
     public boolean remove(Object o) {
         if (contains(o)) {
@@ -223,6 +244,10 @@ public class AVLTree<E> implements Collection<E> {
         return false;
     }
 
+    /**
+     * A method returning true if all of the elements from received collection
+     * exist in the tree and false otherwise
+     * */
     @Override
     public boolean containsAll(Collection<?> c) {
         for (Object o : c) {
@@ -233,6 +258,11 @@ public class AVLTree<E> implements Collection<E> {
         return true;
     }
 
+    /**
+     * A method adding all of the elements from received collection to the tree
+     * Returns true if none of these elements existed in the tree before adding,
+     * and false otherwise
+     * */
     @Override
     public boolean addAll(Collection<? extends E> c) {
         boolean result = true;
@@ -242,6 +272,11 @@ public class AVLTree<E> implements Collection<E> {
         return result;
     }
 
+    /**
+     * A method removing all of the elements from received collection from the tree
+     * Returns true if all of these elements existed in the tree before removing,
+     * and false otherwise
+     * */
     @Override
     public boolean removeAll(Collection<?> c) {
         boolean result = true;
@@ -251,6 +286,12 @@ public class AVLTree<E> implements Collection<E> {
         return result;
     }
 
+    /**
+     * A method removing all of the elements from the tree,
+     * except those contained in the received collection
+     * Returns true if all of these elements existed in the tree before removing,
+     * and false otherwise
+     * */
     @Override
     public boolean retainAll(Collection<?> c) {
         boolean result = true;
@@ -267,6 +308,7 @@ public class AVLTree<E> implements Collection<E> {
         return result;
     }
 
+    /**A method removing all of the elements from the tree*/
     @Override
     public void clear() {
         for (E e : this) {
@@ -274,6 +316,7 @@ public class AVLTree<E> implements Collection<E> {
         }
     }
 
+    /**A class describing node of AVL-tree*/
     private class Node {
         private Node(E value, Node leftChild, Node rightChild, int height) {
             this.value = value;
@@ -287,6 +330,7 @@ public class AVLTree<E> implements Collection<E> {
         int height;
     }
 
+    /**A class describing iterator of AVL-tree*/
     private class AVLTreeIterator implements Iterator<E> {
 
         private AVLTreeIterator() {
