@@ -3,17 +3,6 @@ package com.artemchernikov.g144;
 /**A class describing stack implemented on linked list*/
 public class StackOnLinkedList implements IStack {
 
-    /**A class describing an element of stack*/
-    public class StackElement {
-        public StackElement(int value, StackElement next) {
-            this.value = value;
-            this.next = next;
-        }
-
-        public int value;
-        public StackElement next;
-    }
-
     private StackElement first;
 
     public int pop() {
@@ -33,6 +22,17 @@ public class StackOnLinkedList implements IStack {
 
     public boolean isEmpty() {
         return first == null;
+    }
+
+    /**A class describing an element of stack*/
+    private class StackElement {
+        private StackElement(int value, StackElement next) {
+            this.value = value;
+            this.next = next;
+        }
+
+        private int value;
+        private StackElement next;
     }
 
 }
