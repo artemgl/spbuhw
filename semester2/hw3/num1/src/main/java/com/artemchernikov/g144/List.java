@@ -3,20 +3,9 @@ package com.artemchernikov.g144;
 /**A class describing singly linked list*/
 public class List {
 
-    /**A class describing element of singly linked list*/
-    private class ListElement {
-        private ListElement(int value, ListElement next) {
-            this.value = value;
-            this.next = next;
-        }
-
-        private int value;
-        private ListElement next;
-    }
-
     private ListElement first;
-    private int size;
 
+    private int size;
     public void addElement(int value) {
         first = new ListElement(value, first);
         this.size++;
@@ -88,5 +77,16 @@ public class List {
             System.out.println(current.value);
             current = current.next;
         }
+    }
+
+    /**A class describing element of singly linked list*/
+    private class ListElement {
+        private ListElement(int value, ListElement next) {
+            this.value = value;
+            this.next = next;
+        }
+
+        private int value;
+        private ListElement next;
     }
 }
