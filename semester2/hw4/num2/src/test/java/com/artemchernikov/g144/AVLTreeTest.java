@@ -196,6 +196,30 @@ class AVLTreeTest {
     }
 
     @Test
+    void retainAll2() {
+        Collection<Integer> collection = new LinkedList<>();
+        AVLTree<Integer> tree = new AVLTree<>();
+        int sizeCollection = 5;
+        int sizeTree = 10;
+        for (int i = 0; i < sizeTree; i++) {
+            tree.add(i);
+        }
+        for (int i = 0; i < sizeCollection; i++) {
+            collection.add(i);
+        }
+        tree.retainAll(collection);
+
+        for (int i = 0; i < sizeTree; i++) {
+            if (i < sizeCollection) {
+                assertTrue(tree.contains(i));
+            }
+            else {
+                assertTrue(!tree.contains(i));
+            }
+        }
+    }
+
+    @Test
     void clear() {
         Collection<Integer> tree = new AVLTree<>();
         int quantity = 10;
@@ -206,4 +230,5 @@ class AVLTreeTest {
 
         assertTrue(tree.isEmpty());
     }
+
 }

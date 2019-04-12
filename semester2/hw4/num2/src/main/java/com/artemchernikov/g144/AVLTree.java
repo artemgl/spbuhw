@@ -197,7 +197,7 @@ public class AVLTree<E> implements Collection<E> {
                 node.value = current.value;
                 current.value = value;
 
-                removeElement(node.rightChild, current.value);
+                node.rightChild = removeElement(node.rightChild, current.value);
                 return balance(node);
             } else {
                 return node.leftChild;
@@ -289,7 +289,7 @@ public class AVLTree<E> implements Collection<E> {
     /**
      * A method removing all of the elements from the tree,
      * except those contained in the received collection
-     * Returns true if all of these elements existed in the tree before removing,
+     * Returns true if all of these elements existed in the tree
      * and false otherwise
      * */
     @Override
@@ -302,7 +302,7 @@ public class AVLTree<E> implements Collection<E> {
         }
         for (E current : this) {
             if (!c.contains(current)) {
-                remove(current);
+                result &= remove(current);
             }
         }
         return result;
@@ -334,43 +334,51 @@ public class AVLTree<E> implements Collection<E> {
     private class AVLTreeIterator implements Iterator<E> {
 
         private AVLTreeIterator() {
-            position = 0;
-            list = new LinkedList<>();
-            addBranchToList(root);
+            queue = new ArrayDeque<>();
+            fillQueue(root);
         }
 
-        private void addBranchToList(Node node) {
+        private void fillQueue(Node node) {
             if (node == null) {
                 return;
             }
-            addBranchToList(node.leftChild);
-            list.add(node);
-            addBranchToList(node.rightChild);
+            fillQueue(node.leftChild);
+            queue.offer(node.value);
+            fillQueue(node.rightChild);
         }
 
-        LinkedList<Node> list;
-        int position;
+        private ArrayDeque<E> queue;
 
         @Override
         public boolean hasNext() {
-            return position < list.size();
+            return !queue.isEmpty();
         }
 
         @Override
         public E next() {
-            if (hasNext()) {
-                return list.get(position++).value;
-            } else {
-                throw new NoSuchElementException();
+            queue.removeIf(e -> !AVLTree.this.contains(e));
+            return queue.removeFirst();
+        }
+
+        private boolean removeLastReturned(Node node) {
+            if (node == null) {
+                return false;
             }
+            if (removeLastReturned(node.rightChild)) {
+                return true;
+            }
+            if (!queue.contains(node.value)) {
+                return AVLTree.this.remove(node.value);
+            }
+            return removeLastReturned(node.leftChild);
         }
 
         @Override
         public void remove() {
-            if (position == 0 || position > list.size()) {
+            queue.removeIf(e -> !AVLTree.this.contains(e));
+            if (!removeLastReturned(root)) {
                 throw new IllegalStateException();
             }
-            AVLTree.this.remove(list.get(position - 1).value);
         }
     }
 }
