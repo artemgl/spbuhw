@@ -8,7 +8,9 @@
 
 
 <?import java.lang.Integer?>
-<AnchorPane onMouseMoved="#calculate" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="150.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.artemchernikov.g144.Controller">
+<?import javafx.collections.FXCollections?>
+<?import java.lang.String?>
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="150.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.artemchernikov.g144.Controller">
    <children>
       <fx:define>
          <Integer fx:id="min" fx:value="-9999"/>
@@ -16,7 +18,16 @@
       </fx:define>
       <Spinner fx:id="firstOperand" editable="true" layoutX="15.0" layoutY="40.0" prefHeight="30.0" prefWidth="60.0" min="$min" max="$max" onMouseClicked="#calculate" onKeyReleased="#calculate" />
       <Spinner fx:id="secondOperand" editable="true" layoutX="155.0" layoutY="40.0" prefHeight="30.0" prefWidth="60.0" min="$min" max="$max" onMouseClicked="#calculate" onKeyReleased="#calculate" />
-      <ChoiceBox fx:id="operation" layoutX="90.0" layoutY="40.0" prefHeight="30.0" prefWidth="50.0" onMouseClicked="#calculate" />
+      <ChoiceBox fx:id="operation" layoutX="90.0" layoutY="40.0" prefHeight="30.0" prefWidth="50.0" value="+" onAction="#calculate">
+          <items>
+             <FXCollections fx:factory="observableArrayList">
+                <String fx:value="+" />
+                <String fx:value="-" />
+                <String fx:value="*" />
+                <String fx:value="/" />
+             </FXCollections>
+          </items>
+      </ChoiceBox>
       <Label layoutX="230.0" layoutY="45.0" prefHeight="20.0" prefWidth="35.0" text="=" />
       <TextField fx:id="result" editable="false" layoutX="245.0" layoutY="40.0" prefHeight="30.0" prefWidth="140.0" />
    </children>
