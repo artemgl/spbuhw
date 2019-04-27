@@ -83,11 +83,13 @@ public class Controller {
                         expressionString = expressionString.substring(0, expressionString.length() - 1);
                     }
                 } else {
-                    if (currentNumber.endsWith(".")) {
-                        currentNumber = currentNumber.substring(0, currentNumber.length() - 1);
-                    }
-                    if (currentNumber.endsWith(".0")) {
-                        currentNumber = currentNumber.substring(0, currentNumber.length() - 2);
+                    String checkIfCurrentNumberIsInteger = currentNumber.replaceAll("0", "");
+                    if (checkIfCurrentNumberIsInteger.endsWith(".")) {
+                        for (int i = 0; i < currentNumber.length(); i++) {
+                            if (currentNumber.charAt(i) == '.') {
+                                currentNumber = currentNumber.substring(0, i);
+                            }
+                        }
                     }
                     expressionString += " " + currentNumber + " ";
                     currentNumber = "";
