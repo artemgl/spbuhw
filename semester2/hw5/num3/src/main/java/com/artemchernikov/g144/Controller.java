@@ -73,7 +73,7 @@ public class Controller {
             case "addition": {
                 if (currentNumber.isEmpty()) {
                     if (expressionString.isEmpty()) {
-                        if (answerField.getText().equals("Infinity") || answerField.getText().equals("NaN")) {
+                        if (answerField.getText().equals("Infinity") || answerField.getText().equals("-Infinity") || answerField.getText().equals("NaN")) {
                             break;
                         } else {
                             expressionString = answerField.getText();
