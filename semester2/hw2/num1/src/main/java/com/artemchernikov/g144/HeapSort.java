@@ -3,6 +3,7 @@ package com.artemchernikov.g144;
 /**A class describing heap sort*/
 public class HeapSort implements Sort {
 
+    @Override
     public void sort(int[] numbers) {
         int amountOfLevels = 0;
         for (int size = numbers.length; size > 1; size--) {
@@ -21,20 +22,26 @@ public class HeapSort implements Sort {
                             if (numbers[leftIndex] > numbers[rightIndex]) {
                                 if (numbers[leftIndex] > numbers[j]) {
                                     //swap
-                                    numbers[leftIndex] += numbers[j] - (numbers[j] = numbers[leftIndex]);
+                                    int buff = numbers[leftIndex];
+                                    numbers[leftIndex] = numbers[j];
+                                    numbers[j] = buff;
                                 }
                             }
                             else {
                                 if (numbers[rightIndex] > numbers[j]) {
                                     //swap
-                                    numbers[rightIndex] += numbers[j] - (numbers[j] = numbers[rightIndex]);
+                                    int buff = numbers[rightIndex];
+                                    numbers[rightIndex] = numbers[j];
+                                    numbers[j] = buff;
                                 }
                             }
                         }
                         else {
                             if (numbers[leftIndex] > numbers[j]) {
                                 //swap
-                                numbers[leftIndex] += numbers[j] - (numbers[j] = numbers[leftIndex]);
+                                int buff = numbers[leftIndex];
+                                numbers[leftIndex] = numbers[j];
+                                numbers[j] = buff;
                             }
                         }
                     }
@@ -42,7 +49,9 @@ public class HeapSort implements Sort {
             }
 
             //swap
-            numbers[size - 1] += numbers[0] - (numbers[0] = numbers[size - 1]);
+            int buff = numbers[size - 1];
+            numbers[size - 1] = numbers[0];
+            numbers[0] = buff;
         }
     }
 
