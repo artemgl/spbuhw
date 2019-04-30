@@ -3,6 +3,7 @@ package com.artemchernikov.g144;
 /**An abstract class describing creating string with 2-dimensional array displayed spirally*/
 public abstract class AbstractOutputer implements IOutputer {
 
+    /**An auxiliary method returns true if creating string is over and false in otherwise*/
     private boolean isEnd(int firstCoord, int secondCoord, int size) {
         return firstCoord == 0 && secondCoord == size;
     }
