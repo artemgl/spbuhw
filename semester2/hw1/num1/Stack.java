@@ -4,13 +4,17 @@ package com.artemchernikov.g144;
 public class Stack {
 
     private StackElement first;
-
     private int size;
+
     public Stack() {
         this.first = null;
         this.size = 0;
     }
 
+    /**
+     * A method returns top element and removes it from the stack
+     * If the stack is empty, returns 0
+     * */
     public int pop() {
         if (!isEmpty()) {
             int result = first.value;
@@ -23,15 +27,18 @@ public class Stack {
         return 0;
     }
 
+    /**A method adds received element to the top of the stack*/
     public void push(int value) {
         first = new StackElement(value, first);
         this.size++;
     }
 
+    /**A method returns true if stack is empty and false in otherwise*/
     public boolean isEmpty() {
         return first == null;
     }
 
+    /**A method returns amount of stack elements*/
     public int size() {
         return this.size;
     }
