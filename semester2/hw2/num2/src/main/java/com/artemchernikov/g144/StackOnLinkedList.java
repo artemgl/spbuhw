@@ -5,6 +5,8 @@ public class StackOnLinkedList implements IStack {
 
     private StackElement first;
 
+    /**If stack is empty, returns 0*/
+    @Override
     public int pop() {
         if (!isEmpty()) {
             int result = first.value;
@@ -16,10 +18,12 @@ public class StackOnLinkedList implements IStack {
         return 0;
     }
 
+    @Override
     public void push(int value) {
         first = new StackElement(value, first);
     }
 
+    @Override
     public boolean isEmpty() {
         return first == null;
     }
