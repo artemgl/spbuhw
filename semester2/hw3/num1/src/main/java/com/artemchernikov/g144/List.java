@@ -4,13 +4,18 @@ package com.artemchernikov.g144;
 public class List {
 
     private ListElement first;
-
     private int size;
+
+    /**A method adds received value to the head of the list*/
     public void addElement(int value) {
         first = new ListElement(value, first);
         this.size++;
     }
 
+    /**
+     * A method removes received value from the list
+     * If the list doesn't contain it, throws IllegalArgumentException
+     * */
     public void removeElement(int value) {
         if (!isEmpty()) {
             if (first.value == value) {
@@ -37,6 +42,10 @@ public class List {
         throw new IllegalArgumentException("List doesn't contain this value: " + value);
     }
 
+    /**
+     * A method returns value by received index
+     * If index is out of bounds, throws IndexOutOfBoundsException
+     * */
     public int getElement(int index) throws IndexOutOfBoundsException {
         if (index >= 0 && index < getSize()) {
             ListElement current = first;
@@ -50,6 +59,7 @@ public class List {
         }
     }
 
+    /**A method returns true if the list contains received value and false in otherwise*/
     public boolean exists(int value) {
         ListElement current = first;
         while (current != null) {
@@ -62,14 +72,17 @@ public class List {
         return false;
     }
 
+    /**A method returns amount of list elements*/
     public int getSize() {
         return this.size;
     }
 
+    /**A method returns true if the list is empty and false in otherwise*/
     public boolean isEmpty() {
         return first == null;
     }
 
+    /**A method displays the list*/
     public void print() {
         ListElement current = first;
 

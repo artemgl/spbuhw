@@ -4,8 +4,10 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Scanner;
 
-/**A class describing hash-table
- * Сollision resolution is implemented by chaining method*/
+/**
+ * A class describing hash-table
+ * Сollision resolution is implemented by chaining method
+ * */
 public class HashTable {
 
     private int numberOfHashFunction;
@@ -36,9 +38,11 @@ public class HashTable {
         numberOfHashFunction = 0;
     }
 
-    /**A method receiving number of hash-function and changing current one to new
+    /**
+     * A method receiving number of hash-function and changing current one to new
      * If an unknown number is received, the exception will be thrown
-     * Hash-table will be changed as if it always was with new hash-function*/
+     * Hash-table will be changed as if it always was with new hash-function
+     * */
     public void changeHashFunction(int numberOfHashFunction) {
         if (this.numberOfHashFunction != numberOfHashFunction) {
             if (numberOfHashFunction >= 0 && numberOfHashFunction < 2) {
@@ -86,12 +90,15 @@ public class HashTable {
         return value;
     }
 
+    /**A method returns load factor of the hash-table*/
     public double getLoadFactor() {
         return (double)amountOfNotFreeBuckets / size;
     }
 
-    /**A method adding received value to hash-table
-     * If received value already exists, the exception will be thrown*/
+    /**
+     * A method adding received value to hash-table
+     * If received value already exists, the exception will be thrown
+     * */
     public void addElement(int value) {
         if (!exists(value)) {
             int hash = hash(value);
@@ -109,8 +116,10 @@ public class HashTable {
         }
     }
 
-    /**A method removing received value from hash-table
-     * If received value doesn't exist, the exception will be thrown*/
+    /**
+     * A method removing received value from hash-table
+     * If received value doesn't exist, the exception will be thrown
+     * */
     public void removeElement(int value) {
         int hash = hash(value);
         try {
@@ -128,6 +137,7 @@ public class HashTable {
         }
     }
 
+    /**A method returns length of the longest chain*/
     public int getMaxLengthOfList() {
         int result = 0;
         for (List current : buckets) {
@@ -138,6 +148,7 @@ public class HashTable {
         return result;
     }
 
+    /**A method returns true if the hash-table contains received value and false in otherwise*/
     public boolean exists(int value) {
         return buckets[hash(value)].exists(value);
     }
