@@ -9,19 +9,23 @@ public class SyntaxTree {
 
     private Node root;
 
+    /**A method returns meaning of the syntax tree*/
     public int calculate() {
         return root.get();
     }
 
+    /**A method returns meaning of received expression*/
     public int calculate(String expression) {
         root = readTree(expression.substring(1));
         return root.get();
     }
 
+    /**A method displays the syntax tree*/
     public void print() {
         root.print();
     }
 
+    /**An auxiliary method returns child of the root of syntax tree built by received expression*/
     private Node readChild(String line) {
         char symbol = line.charAt(0);
         if (symbol == '(') {
@@ -35,6 +39,7 @@ public class SyntaxTree {
         }
     }
 
+    /**An auxiliary method returns the root of the syntax tree built by received expression*/
     private Node readTree(String line) {
         char operation = line.charAt(0);
         line = line.substring(2);
@@ -72,7 +77,10 @@ public class SyntaxTree {
 
     /**An interface describing node of the syntax tree*/
     private interface Node {
+        /**A method returns meaning of the node*/
         int get();
+
+        /**A method displays tree which root is this node*/
         void print();
     }
 
