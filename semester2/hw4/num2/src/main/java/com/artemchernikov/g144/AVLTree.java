@@ -23,6 +23,7 @@ public class AVLTree<E> implements Collection<E> {
         return root == null;
     }
 
+    /**An auxiliary method returns true if received element exists in the tree and returns false otherwise*/
     private boolean contains(Node node, Object o) {
         if (node == null) {
             return false;
@@ -83,16 +84,19 @@ public class AVLTree<E> implements Collection<E> {
         return a;
     }
 
+    /**A method returns height of received node*/
     private int height(Node node) {
         return node == null ? 0 : node.height;
     }
 
+    /**A method updates height of received node*/
     private void updateHeight(Node node) {
         int leftHeight = height(node.leftChild);
         int rightHeight = height(node.rightChild);
         node.height = (rightHeight > leftHeight ? rightHeight : leftHeight) + 1;
     }
 
+    /**An auxiliary method balances tree, which is given by received root, by rotating*/
     private Node rotateRight(Node node) {
         Node left = node.leftChild;
         node.leftChild = left.rightChild;
@@ -104,6 +108,7 @@ public class AVLTree<E> implements Collection<E> {
         return left;
     }
 
+    /**An auxiliary method balances tree, which is given by received root, by rotating*/
     private Node rotateLeft(Node node) {
         Node right = node.rightChild;
         node.rightChild = right.leftChild;
@@ -115,10 +120,15 @@ public class AVLTree<E> implements Collection<E> {
         return right;
     }
 
+    /**A method returns balance factor of received node*/
     private int balanceFactor(Node node) {
         return height(node.rightChild) - height(node.leftChild);
     }
 
+    /**
+     * An auxiliary method balances tree which is given by received root
+     * Returns balanced tree
+     * */
     private Node balance(Node node) {
         updateHeight(node);
 
@@ -138,6 +148,10 @@ public class AVLTree<E> implements Collection<E> {
         return node;
     }
 
+    /**
+     * An auxiliary method adding received element to the tree
+     * Returns true if adding was successful and false otherwise
+     * */
     private boolean addElement(Node node, E value) {
         if (value.equals(node.value)) {
             return false;
@@ -183,6 +197,7 @@ public class AVLTree<E> implements Collection<E> {
         return true;
     }
 
+    /**An auxiliary method removes received node and returns tree without this node*/
     private Node removeElement(Node node) {
         if (node.leftChild != null) {
             if (node.rightChild != null) {
@@ -211,6 +226,10 @@ public class AVLTree<E> implements Collection<E> {
         }
     }
 
+    /**
+     * An auxiliary method removes received value from the tree which is given by root,
+     * and returns tree without this value
+     * */
     private Node removeElement(Node node, Object value) {
         if (value.equals(node.value)) {
             return removeElement(node);
@@ -338,6 +357,7 @@ public class AVLTree<E> implements Collection<E> {
             fillQueue(root);
         }
 
+        /**A method fills queue with elements of the tree*/
         private void fillQueue(Node node) {
             if (node == null) {
                 return;
@@ -360,6 +380,7 @@ public class AVLTree<E> implements Collection<E> {
             return queue.removeFirst();
         }
 
+        /**A method returns true if removing was successful and false in otherwise*/
         private boolean removeLastReturned(Node node) {
             if (node == null) {
                 return false;
