@@ -1,11 +1,13 @@
 package com.artemchernikov.g144;
 
+/**A class describing exception that is thrown when such element already exists*/
 class AlreadyExistsElementException extends IllegalArgumentException {
     AlreadyExistsElementException(String message) {
         super(message);
     }
 }
 
+/**A class describing exception that is thrown when such element doesn't exist*/
 class NoElementException extends IllegalArgumentException {
     NoElementException(String message) {
         super(message);
@@ -16,8 +18,12 @@ class NoElementException extends IllegalArgumentException {
 public class UniqueList<T> {
 
     private ListElement first;
-
     private int size;
+
+    /**
+     * A method adds received value to the head of the list
+     * If this value already exists in the list, throws exception AlreadyExistsElementException
+     * */
     public void addElement(T value) {
         if (!exists(value)) {
             first = new ListElement(value, first);
@@ -27,6 +33,10 @@ public class UniqueList<T> {
         }
     }
 
+    /**
+     * A method removes received value from the list
+     * If the list doesn't contain it, throws NoElementException
+     * */
     public void removeElement(T value) {
         if (!isEmpty()) {
             if (first.value.equals(value)) {
@@ -53,6 +63,10 @@ public class UniqueList<T> {
         throw new NoElementException("List doesn't contain this value: " + value);
     }
 
+    /**
+     * A method returns value by received index
+     * If index is out of bounds, throws IndexOutOfBoundsException
+     * */
     public T getElement(int index) throws IndexOutOfBoundsException {
         if (index >= 0 && index < getSize()) {
             ListElement current = first;
@@ -66,6 +80,7 @@ public class UniqueList<T> {
         }
     }
 
+    /**A method returns true if the list contains received value and false in otherwise*/
     public boolean exists(T value) {
         ListElement current = first;
         while (current != null) {
@@ -78,14 +93,17 @@ public class UniqueList<T> {
         return false;
     }
 
+    /**A method returns amount of list elements*/
     public int getSize() {
         return this.size;
     }
 
+    /**A method returns true if the list is empty and false in otherwise*/
     public boolean isEmpty() {
         return first == null;
     }
 
+    /**A method displays the list*/
     public void print() {
         ListElement current = first;
 
