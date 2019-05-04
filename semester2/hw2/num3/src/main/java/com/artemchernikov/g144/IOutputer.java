@@ -4,6 +4,6 @@ package com.artemchernikov.g144;
 public interface IOutputer {
 
     /**A method prints received array*/
-    void output(int[][] numbers);
+    String output(int[][] numbers);
 
 }

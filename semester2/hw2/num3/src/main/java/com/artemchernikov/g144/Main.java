@@ -30,6 +30,7 @@ public class Main {
             case 1:
                 outputer = new OutputerToConsole();
                 break;
+            case 2:
             default:
                 outputer = new OutputerToFile();
                 break;

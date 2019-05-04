@@ -4,8 +4,8 @@ package com.artemchernikov.g144;
 public class OutputerToConsole extends AbstractOutputer {
 
     @Override
-    public void output(int[][] numbers) {
-        System.out.println(getString(numbers));
+    public String output(int[][] numbers) {
+        return output(numbers, System.out);
     }
 
 }
