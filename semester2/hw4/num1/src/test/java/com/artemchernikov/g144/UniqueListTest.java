@@ -7,7 +7,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class UniqueListTest {
 
     @Test
-    void addElementAndGetElement() {
+    void shouldThrowAlreadyExistsElementExceptionTest() {
         UniqueList<Integer> list = new UniqueList<>();
 
         int size = 20;
@@ -16,39 +16,36 @@ class UniqueListTest {
         }
 
         for (int i = 0; i < size; i++) {
-            assertEquals(size - i - 1, (int)list.getElement(i));
+            final int j = i;
+            assertThrows(AlreadyExistsElementException.class, () -> list.addElement(j));
         }
     }
 
     @Test
-    void removeElementAndGetSize() {
+    void shouldNotAddAlreadyExistingElementTest() {
         UniqueList<Integer> list = new UniqueList<>();
 
         int size = 20;
-        for (int i = 0; i < size; i++) {
-            list.addElement(i);
+        for (int i = 0; i < 2; i++) {
+            for (int j = 0; j < size; j++) {
+                try {
+                    list.addElement(j);
+                } catch (AlreadyExistsElementException ignore) {}
+            }
         }
 
-        for (int i = 0; i < size; i++) {
-            list.removeElement(i);
-            assertEquals(size - 1 - i, list.getSize());
-        }
-
-        assertEquals(0, list.getSize());
+        assertEquals(20, list.getSize());
     }
 
     @Test
-    void exists() {
+    void shouldThrowNoElementExceptionTest() {
         UniqueList<Integer> list = new UniqueList<>();
 
         int size = 20;
         for (int i = 0; i < size; i++) {
-            list.addElement(i);
-        }
-
-        for (int i = 0; i < size; i++) {
-            assert(list.exists(i));
-            assert(!list.exists(size + i));
+            final int j = i;
+            assertThrows(NoElementException.class, () -> list.removeElement(j));
         }
     }
+
 }
