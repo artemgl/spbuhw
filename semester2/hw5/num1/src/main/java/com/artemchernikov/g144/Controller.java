@@ -13,6 +13,7 @@ public class Controller {
     @FXML
     private Slider slider;
 
+    /**A method updates progress of progress bar according slider value*/
     public void updateProgressBar(MouseEvent scrollEvent) {
         progressBar.setProgress(slider.getValue() / 100);
     }
