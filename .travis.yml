@@ -1,4 +1,7 @@
 language: java
+jdk:
+- oraclejdk8
 os:
 - linux
-script: cd semester2 && ./gradlew check
+script:
+- cd semester2
