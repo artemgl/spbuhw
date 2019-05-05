@@ -21,8 +21,7 @@ public class Main extends Application {
             root = FXMLLoader.load(getClass().getClassLoader().getResource("main.fxml"));
             Scene scene = new Scene(root);
             primaryStage.setTitle("Calculator");
-            primaryStage.setMinWidth(414);
-            primaryStage.setMinHeight(187);
+            primaryStage.setResizable(false);
             primaryStage.setScene(scene);
             primaryStage.show();
         } catch (IOException exc) {

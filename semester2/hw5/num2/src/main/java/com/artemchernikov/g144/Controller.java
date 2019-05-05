@@ -19,26 +19,32 @@ public class Controller {
     @FXML
     private ChoiceBox<String> operation;
 
-    /**A method calculating value of the expression composed by user*/
-    public void calculate() {
+    /**A method calculating meaning of received expression*/
+    public static double calculateExpression(double firstOperand, double secondOperand, String operator) {
         double answer = 0;
-        String operator = operation.getValue();
-        double first = (Integer)firstOperand.getValue();
-        double second = (Integer)secondOperand.getValue();
         switch (operator) {
             case "+":
-                answer = first + second;
+                answer = firstOperand + secondOperand;
                 break;
             case "-":
-                answer = first - second;
+                answer = firstOperand - secondOperand;
                 break;
             case "*":
-                answer = first * second;
+                answer = firstOperand * secondOperand;
                 break;
             case "/":
-                answer = first / second;
+                answer = firstOperand / secondOperand;
                 break;
         }
-        result.setText(answer + "");
+        return answer;
+    }
+
+    /**A method sets calculated value to answer field*/
+    public void calculate() {
+        result.setText("" +
+                calculateExpression(
+                (Integer)firstOperand.getValue(),
+                (Integer)secondOperand.getValue(),
+                operation.getValue()));
     }
 }
