@@ -5,11 +5,6 @@ import java.util.*;
 /**A class describing AVL-tree implemented on interface Collection*/
 public class AVLTree<E> implements Collection<E> {
 
-    public AVLTree() {
-        root = null;
-        size = 0;
-    }
-
     private Node root;
     private int size;
 
@@ -89,65 +84,6 @@ public class AVLTree<E> implements Collection<E> {
         return node == null ? 0 : node.height;
     }
 
-    /**A method updates height of received node*/
-    private void updateHeight(Node node) {
-        int leftHeight = height(node.leftChild);
-        int rightHeight = height(node.rightChild);
-        node.height = (rightHeight > leftHeight ? rightHeight : leftHeight) + 1;
-    }
-
-    /**An auxiliary method balances tree, which is given by received root, by rotating*/
-    private Node rotateRight(Node node) {
-        Node left = node.leftChild;
-        node.leftChild = left.rightChild;
-        left.rightChild = node;
-
-        updateHeight(node);
-        updateHeight(left);
-
-        return left;
-    }
-
-    /**An auxiliary method balances tree, which is given by received root, by rotating*/
-    private Node rotateLeft(Node node) {
-        Node right = node.rightChild;
-        node.rightChild = right.leftChild;
-        right.leftChild = node;
-
-        updateHeight(node);
-        updateHeight(right);
-
-        return right;
-    }
-
-    /**A method returns balance factor of received node*/
-    private int balanceFactor(Node node) {
-        return height(node.rightChild) - height(node.leftChild);
-    }
-
-    /**
-     * An auxiliary method balances tree which is given by received root
-     * Returns balanced tree
-     * */
-    private Node balance(Node node) {
-        updateHeight(node);
-
-        switch (balanceFactor(node)) {
-            case 2:
-                if (balanceFactor(node.rightChild) == -1) {
-                    node.rightChild = rotateRight(node.rightChild);
-                }
-                return rotateLeft(node);
-            case -2:
-                if (balanceFactor(node.leftChild) == 1) {
-                    node.leftChild = rotateLeft(node.leftChild);
-                }
-                return rotateRight(node);
-        }
-
-        return node;
-    }
-
     /**
      * An auxiliary method adding received element to the tree
      * Returns true if adding was successful and false otherwise
@@ -162,7 +98,7 @@ public class AVLTree<E> implements Collection<E> {
                 if (!addElement(node.leftChild, value)) {
                     return false;
                 }
-                node.leftChild = balance(node.leftChild);
+                node.leftChild = node.leftChild.balance();
             } else {
                 node.leftChild = new Node(value, null, null, 1);
             }
@@ -171,7 +107,7 @@ public class AVLTree<E> implements Collection<E> {
                 if (!addElement(node.rightChild, value)) {
                     return false;
                 }
-                node.rightChild = balance(node.rightChild);
+                node.rightChild = node.rightChild.balance();
             } else {
                 node.rightChild = new Node(value, null, null, 1);
             }
@@ -189,7 +125,7 @@ public class AVLTree<E> implements Collection<E> {
             if (!addElement(root, e)) {
                 return false;
             }
-            root = balance(root);
+            root = root.balance();
         } else {
             root = new Node(e, null, null, 1);
         }
@@ -213,7 +149,7 @@ public class AVLTree<E> implements Collection<E> {
                 current.value = value;
 
                 node.rightChild = removeElement(node.rightChild, current.value);
-                return balance(node);
+                return node.balance();
             } else {
                 return node.leftChild;
             }
@@ -238,12 +174,12 @@ public class AVLTree<E> implements Collection<E> {
         if (((Comparable)value).compareTo(node.value) < 0) {
             if (node.leftChild != null) {
                 node.leftChild = removeElement(node.leftChild, value);
-                return balance(node);
+                return node.balance();
             }
         } else {
             if (node.rightChild != null) {
                 node.rightChild = removeElement(node.rightChild, value);
-                return balance(node);
+                return node.balance();
             }
         }
         return node;
@@ -337,20 +273,79 @@ public class AVLTree<E> implements Collection<E> {
 
     /**A class describing node of AVL-tree*/
     private class Node {
+        private E value;
+        private Node leftChild;
+        private Node rightChild;
+        private int height;
+
         private Node(E value, Node leftChild, Node rightChild, int height) {
             this.value = value;
             this.leftChild = leftChild;
             this.rightChild = rightChild;
             this.height = height;
         }
-        E value;
-        Node leftChild;
-        Node rightChild;
-        int height;
+
+        /**A method updates height of node*/
+        private void updateHeight() {
+            int leftHeight = height(this.leftChild);
+            int rightHeight = height(this.rightChild);
+            this.height = (rightHeight > leftHeight ? rightHeight : leftHeight) + 1;
+        }
+
+        /**A method returns balanced tree, root of which is this node, by rotating*/
+        private Node rotateRight() {
+            Node left = this.leftChild;
+            this.leftChild = left.rightChild;
+            left.rightChild = this;
+
+            this.updateHeight();
+            left.updateHeight();
+
+            return left;
+        }
+
+        /**A method returns balanced tree, root of which is this node, by rotating*/
+        private Node rotateLeft() {
+            Node right = this.rightChild;
+            this.rightChild = right.leftChild;
+            right.leftChild = this;
+
+            this.updateHeight();
+            right.updateHeight();
+
+            return right;
+        }
+
+        /**A method returns balance factor*/
+        private int balanceFactor() {
+            return height(this.rightChild) - height(this.leftChild);
+        }
+
+        /**A method returns balanced tree, root of which is this node*/
+        private Node balance() {
+            this.updateHeight();
+
+            switch (this.balanceFactor()) {
+                case 2:
+                    if (this.rightChild.balanceFactor() == -1) {
+                        this.rightChild = this.rightChild.rotateRight();
+                    }
+                    return this.rotateLeft();
+                case -2:
+                    if (this.leftChild.balanceFactor() == 1) {
+                        this.leftChild = this.leftChild.rotateLeft();
+                    }
+                    return this.rotateRight();
+            }
+
+            return this;
+        }
     }
 
     /**A class describing iterator of AVL-tree*/
     private class AVLTreeIterator implements Iterator<E> {
+
+        private ArrayDeque<E> queue;
 
         private AVLTreeIterator() {
             queue = new ArrayDeque<>();
@@ -366,8 +361,6 @@ public class AVLTree<E> implements Collection<E> {
             queue.offer(node.value);
             fillQueue(node.rightChild);
         }
-
-        private ArrayDeque<E> queue;
 
         @Override
         public boolean hasNext() {
