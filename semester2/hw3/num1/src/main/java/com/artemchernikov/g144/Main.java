@@ -3,6 +3,7 @@ package com.artemchernikov.g144;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Scanner;
+import java.util.function.Function;
 
 public class Main {
     public static void main(String[] args) {
@@ -15,7 +16,7 @@ public class Main {
         System.out.println("5 - fill the hash-table with file content");
         System.out.println("6 - change the hash-function");
 
-        HashTable hashTable = new HashTable();
+        HashTable hashTable = new HashTable(256);
 
         Scanner in = new Scanner(System.in);
         int input = 0;
@@ -68,14 +69,47 @@ public class Main {
                     }
                     break;
                 case 6: {
-                    System.out.println("Enter the number of hash-function (0 or 1)");
-                    int value = in.nextInt();
-                    try {
-                        hashTable.changeHashFunction(value);
-                        System.out.println("The hash-function is changed");
-                    } catch (IllegalArgumentException exc) {
-                        System.out.println(exc.getMessage());
+                    System.out.println("Enter the number of hash-function");
+                    System.out.println("0 - cancel");
+                    System.out.println("1 - \n" +
+                            "value ^= (value << 13);\n" +
+                            "value ^= (value >>> 17);\n" +
+                            "value ^= (value << 5);");
+                    System.out.println("2 - \n" +
+                            "value ^= (value * 7);\n" +
+                            "value ^= ~(value << 11);\n" +
+                            "value ^= (value >> 29);");
+                    System.out.println("3 - \n" +
+                            "value += value");
+                    int numberOfHashFunction = in.nextInt();
+                    Function<Integer, Integer> function = null;
+                    switch (numberOfHashFunction) {
+                        case 0:
+                            break;
+                        case 1:
+                            function = n -> {
+                                n ^= (n << 13);
+                                n ^= (n >>> 17);
+                                n ^= (n << 5);
+                                return n;
+                            };
+                            break;
+                        case 2:
+                            function = n -> {
+                                n ^= (n * 7);
+                                n ^= ~(n << 11);
+                                n ^= (n >> 29);
+                                return n;
+                            };
+                            break;
+                        case 3:
+                            function = n -> n + n;
+                            break;
+                        default:
+                            function = n -> n;
                     }
+                    hashTable.changeHashFunction(function);
+                    System.out.println("The hash-function is changed");
                     break;
                 }
                 default:

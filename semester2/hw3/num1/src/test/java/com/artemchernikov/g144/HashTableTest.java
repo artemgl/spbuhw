@@ -15,7 +15,12 @@ class HashTableTest {
 
         assertEquals(2, hashTable.getMaxLengthOfList());
 
-        hashTable.changeHashFunction(1);
+        hashTable.changeHashFunction(n -> {
+            n ^= (n * 7);
+            n ^= ~(n << 11);
+            n ^= (n >> 29);
+            return n;
+        });
 
         assertEquals(1, hashTable.getMaxLengthOfList());
     }
@@ -31,7 +36,7 @@ class HashTableTest {
         }
 
         for (int i = 0; i < size; i++) {
-            assert(hashTable.exists(i));
+            assertTrue(hashTable.exists(i));
         }
     }
 

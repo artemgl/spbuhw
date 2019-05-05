@@ -2,7 +2,9 @@ package com.artemchernikov.g144;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Scanner;
+import java.util.function.Function;
 
 /**
  * A class describing hash-table
@@ -10,79 +12,30 @@ import java.util.Scanner;
  * */
 public class HashTable {
 
-    private int numberOfHashFunction;
+    private Function<Integer, Integer> hashFunction;
     private int size;
-    private int amountOfNotFreeBuckets;
     private int amountOfConflictBuckets;
-    private List[] buckets;
+    private int amountOfElements;
+    private ArrayList[] buckets;
 
     public HashTable(int size) {
         this.size = size;
-        buckets = new List[size];
-        for (int i = 0; i < buckets.length; i++) {
-            buckets[i] = new List();
+        buckets = new ArrayList[size];
+        for (int i = 0; i < size; i++) {
+            buckets[i] = new ArrayList<>();
         }
-        amountOfNotFreeBuckets = 0;
         amountOfConflictBuckets = 0;
-        numberOfHashFunction = 0;
-    }
-
-    public HashTable() {
-        size = 256;
-        buckets = new List[256];
-        for (int i = 0; i < buckets.length; i++) {
-            buckets[i] = new List();
-        }
-        amountOfNotFreeBuckets = 0;
-        amountOfConflictBuckets = 0;
-        numberOfHashFunction = 0;
-    }
-
-    /**
-     * A method receiving number of hash-function and changing current one to new
-     * If an unknown number is received, the exception will be thrown
-     * Hash-table will be changed as if it always was with new hash-function
-     * */
-    public void changeHashFunction(int numberOfHashFunction) {
-        if (this.numberOfHashFunction != numberOfHashFunction) {
-            if (numberOfHashFunction >= 0 && numberOfHashFunction < 2) {
-                this.numberOfHashFunction = numberOfHashFunction;
-            } else {
-                throw new IllegalArgumentException("Unknown number of hash-function: " + numberOfHashFunction);
-            }
-
-            amountOfNotFreeBuckets = 0;
-            amountOfConflictBuckets = 0;
-
-            List[] earlyBuckets = buckets;
-            buckets = new List[size];
-            for (int i = 0; i < buckets.length; i++) {
-                buckets[i] = new List();
-            }
-
-            for (List currentList : earlyBuckets) {
-                for (int i = 0; i < currentList.getSize(); i++) {
-                    addElement(currentList.getElement(i));
-                }
-            }
-        }
+        amountOfElements = 0;
+        hashFunction = n -> {
+            n ^= (n << 13);
+            n ^= (n >>> 17);
+            n ^= (n << 5);
+            return n;};
     }
 
     /**A method calculating hash of received value*/
     private int hash(int value) {
-        switch (numberOfHashFunction) {
-            case 0:
-                value ^= (value << 13);
-                value ^= (value >>> 17);
-                value ^= (value << 5);
-                break;
-            case 1:
-                value ^= (value * 7);
-                value ^= ~(value << 11);
-                value ^= (value >> 29);
-                break;
-                //numberOfHashFunction is private field and might be only between 0 and 1 at method changeHashFunction()
-        }
+        value = hashFunction.apply(value);
 
         value %= size;
         value += (value) < 0 ? size : 0;
@@ -92,25 +45,74 @@ public class HashTable {
 
     /**A method returns load factor of the hash-table*/
     public double getLoadFactor() {
-        return (double)amountOfNotFreeBuckets / size;
+        return (double)amountOfElements / size;
+    }
+
+    /**An auxiliary method clears buckets and changes size of buckets to received one*/
+    private void clearAndUpdate(int newSize) {
+        amountOfConflictBuckets = 0;
+        amountOfElements = 0;
+        size = newSize;
+
+        buckets = new ArrayList[size];
+        for (int i = 0; i < buckets.length; i++) {
+            buckets[i] = new ArrayList<Integer>();
+        }
+    }
+
+    /**
+     * A method receiving hash-function and changing current one to new one
+     * Hash-table will be changed as if it always was with new hash-function
+     * */
+    public void changeHashFunction(Function<Integer, Integer> newHashFunction) {
+        ArrayList<Integer>[] earlyBuckets = buckets;
+        clearAndUpdate(size);
+
+        hashFunction = newHashFunction;
+        for (ArrayList<Integer> currentList : earlyBuckets) {
+            for (Integer n : currentList) {
+                addElement(n);
+            }
+        }
+    }
+
+    /**
+     * A method expands hash-table 2 times
+     * If number of buckets too big, expands to size 2 147 483 647
+     * */
+    private void expand() {
+        ArrayList<Integer>[] earlyBuckets = buckets;
+
+        if (size > 0x3FFFFFFF) {
+            clearAndUpdate(0x7FFFFFFF);
+        } else {
+            clearAndUpdate(size * 2);
+        }
+
+        for (ArrayList<Integer> currentList : earlyBuckets) {
+            for (Integer n : currentList) {
+                addElement(n);
+            }
+        }
     }
 
     /**
      * A method adding received value to hash-table
      * If received value already exists, the exception will be thrown
+     * If load factor is bigger, than 0.999, the hash-table expands
      * */
     public void addElement(int value) {
         if (!exists(value)) {
             int hash = hash(value);
-            switch (buckets[hash].getSize()) {
-                case 0:
-                    amountOfNotFreeBuckets++;
-                    break;
-                case 1:
-                    amountOfConflictBuckets++;
-                    break;
+            if (buckets[hash].size() == 1) {
+                amountOfConflictBuckets++;
             }
-            buckets[hash].addElement(value);
+            buckets[hash].add(value);
+            amountOfElements++;
+
+            if (getLoadFactor() > 0.999) {
+                expand();
+            }
         } else {
             throw new IllegalArgumentException("Hash-table already contains this value: " + value);
         }
@@ -122,17 +124,13 @@ public class HashTable {
      * */
     public void removeElement(int value) {
         int hash = hash(value);
-        try {
-            switch (buckets[hash].getSize()) {
-                case 1:
-                    amountOfNotFreeBuckets--;
-                    break;
-                case 2:
-                    amountOfConflictBuckets--;
-                    break;
+        if (exists(value)) {
+            if (buckets[hash].size() == 2) {
+                amountOfConflictBuckets--;
             }
-            buckets[hash].removeElement(value);
-        } catch(IllegalArgumentException exc) {
+            buckets[hash].remove(Integer.valueOf(value));
+            amountOfElements--;
+        } else {
             throw new IllegalArgumentException("Hash-table doesn't contain this value: " + value);
         }
     }
@@ -140,9 +138,9 @@ public class HashTable {
     /**A method returns length of the longest chain*/
     public int getMaxLengthOfList() {
         int result = 0;
-        for (List current : buckets) {
-            if (current.getSize() > result) {
-                result = current.getSize();
+        for (ArrayList current : buckets) {
+            if (current.size() > result) {
+                result = current.size();
             }
         }
         return result;
@@ -150,7 +148,7 @@ public class HashTable {
 
     /**A method returns true if the hash-table contains received value and false in otherwise*/
     public boolean exists(int value) {
-        return buckets[hash(value)].exists(value);
+        return buckets[hash(value)].contains(value);
     }
 
     /**A method displaying statistics of hash-table*/
