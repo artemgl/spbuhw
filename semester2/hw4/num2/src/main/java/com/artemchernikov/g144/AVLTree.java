@@ -79,11 +79,6 @@ public class AVLTree<E> implements Collection<E> {
         return a;
     }
 
-    /**A method returns height of received node*/
-    private int height(Node node) {
-        return node == null ? 0 : node.height;
-    }
-
     /**
      * A method adding received element to the tree
      * Returns true if adding was successful and false otherwise
@@ -202,6 +197,12 @@ public class AVLTree<E> implements Collection<E> {
             this.rightChild = rightChild;
             this.height = height;
         }
+
+        /**A method returns height of received node*/
+        private int height(Node node) {
+            return node == null ? 0 : node.height;
+        }
+
 
         /**A method updates height of node*/
         private void updateHeight() {
