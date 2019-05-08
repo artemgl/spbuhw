@@ -85,44 +85,13 @@ public class AVLTree<E> implements Collection<E> {
     }
 
     /**
-     * An auxiliary method adding received element to the tree
-     * Returns true if adding was successful and false otherwise
-     * */
-    private boolean addElement(Node node, E value) {
-        if (value.equals(node.value)) {
-            return false;
-        }
-
-        if (((Comparable)value).compareTo(node.value) < 0) {
-            if (node.leftChild != null) {
-                if (!addElement(node.leftChild, value)) {
-                    return false;
-                }
-                node.leftChild = node.leftChild.balance();
-            } else {
-                node.leftChild = new Node(value, null, null, 1);
-            }
-        } else {
-            if (node.rightChild != null) {
-                if (!addElement(node.rightChild, value)) {
-                    return false;
-                }
-                node.rightChild = node.rightChild.balance();
-            } else {
-                node.rightChild = new Node(value, null, null, 1);
-            }
-        }
-        return true;
-    }
-
-    /**
      * A method adding received element to the tree
      * Returns true if adding was successful and false otherwise
      * */
     @Override
     public boolean add(E e) {
         if (root != null) {
-            if (!addElement(root, e)) {
+            if (!root.addElement(e)) {
                 return false;
             }
             root = root.balance();
@@ -133,58 +102,6 @@ public class AVLTree<E> implements Collection<E> {
         return true;
     }
 
-    /**An auxiliary method removes received node and returns tree without this node*/
-    private Node removeElement(Node node) {
-        if (node.leftChild != null) {
-            if (node.rightChild != null) {
-                Node current = node.rightChild;
-
-                while (current.leftChild != null) {
-                    current = current.leftChild;
-                }
-
-                //swap
-                E value = node.value;
-                node.value = current.value;
-                current.value = value;
-
-                node.rightChild = removeElement(node.rightChild, current.value);
-                return node.balance();
-            } else {
-                return node.leftChild;
-            }
-        } else {
-            if (node.rightChild != null) {
-                return node.rightChild;
-            } else {
-                return null;
-            }
-        }
-    }
-
-    /**
-     * An auxiliary method removes received value from the tree which is given by root,
-     * and returns tree without this value
-     * */
-    private Node removeElement(Node node, Object value) {
-        if (value.equals(node.value)) {
-            return removeElement(node);
-        }
-
-        if (((Comparable)value).compareTo(node.value) < 0) {
-            if (node.leftChild != null) {
-                node.leftChild = removeElement(node.leftChild, value);
-                return node.balance();
-            }
-        } else {
-            if (node.rightChild != null) {
-                node.rightChild = removeElement(node.rightChild, value);
-                return node.balance();
-            }
-        }
-        return node;
-    }
-
     /**
      * A method removing received element from the tree
      * Returns true if removing was successful and false otherwise
@@ -192,7 +109,7 @@ public class AVLTree<E> implements Collection<E> {
     @Override
     public boolean remove(Object o) {
         if (contains(o)) {
-            root = removeElement(root, o);
+            root = root.removeElement(o);
             size--;
             return true;
         }
@@ -273,6 +190,7 @@ public class AVLTree<E> implements Collection<E> {
 
     /**A class describing node of AVL-tree*/
     private class Node {
+
         private E value;
         private Node leftChild;
         private Node rightChild;
@@ -338,6 +256,85 @@ public class AVLTree<E> implements Collection<E> {
                     return this.rotateRight();
             }
 
+            return this;
+        }
+
+        /**
+         * An auxiliary method adding received element to the tree, root of which is this node
+         * Returns true if adding was successful and false otherwise
+         * */
+        private boolean addElement(E value) {
+            if (value.equals(this.value)) {
+                return false;
+            }
+
+            if (((Comparable)value).compareTo(this.value) < 0) {
+                if (this.leftChild != null) {
+                    if (!this.leftChild.addElement(value)) {
+                        return false;
+                    }
+                    this.leftChild = this.leftChild.balance();
+                } else {
+                    this.leftChild = new Node(value, null, null, 1);
+                }
+            } else {
+                if (this.rightChild != null) {
+                    if (!this.rightChild.addElement(value)) {
+                        return false;
+                    }
+                    this.rightChild = this.rightChild.balance();
+                } else {
+                    this.rightChild = new Node(value, null, null, 1);
+                }
+            }
+            return true;
+        }
+
+        /**An auxiliary method removes this node and returns tree without it*/
+        private Node removeElement() {
+            if (this.leftChild != null) {
+                if (this.rightChild != null) {
+                    Node current = this.rightChild;
+
+                    while (current.leftChild != null) {
+                        current = current.leftChild;
+                    }
+
+                    //swap
+                    E value = this.value;
+                    this.value = current.value;
+                    current.value = value;
+
+                    this.rightChild = this.rightChild.removeElement(current.value);
+                    return this.balance();
+                } else {
+                    return this.leftChild;
+                }
+            } else {
+                return this.rightChild;
+            }
+        }
+
+        /**
+         * An auxiliary method removes received value from the tree, root of which is this node,
+         * and returns tree without this value
+         * */
+        private Node removeElement(Object value) {
+            if (value.equals(this.value)) {
+                return this.removeElement();
+            }
+
+            if (((Comparable)value).compareTo(this.value) < 0) {
+                if (this.leftChild != null) {
+                    this.leftChild = this.leftChild.removeElement(value);
+                    return this.balance();
+                }
+            } else {
+                if (this.rightChild != null) {
+                    this.rightChild = this.rightChild.removeElement(value);
+                    return this.balance();
+                }
+            }
             return this;
         }
     }
