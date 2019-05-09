@@ -133,6 +133,7 @@ public class Trie implements Serializable {
     /**
      * A method serializes the trie
      * @param out - output stream to write serialized trie in it
+     * @throws IOException if writing was unsuccessful
      * */
     @Override
     public void serialize(OutputStream out) throws IOException {
@@ -158,6 +159,7 @@ public class Trie implements Serializable {
      * A method deserializes the trie
      * Structure of the trie before deserialization will be erased
      * @param in - input stream to build the trie by it
+     * @throws IOException if reading was unsuccessful
      * */
     @Override
     public void deserialize(InputStream in) throws IOException {
