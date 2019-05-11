@@ -16,7 +16,7 @@ public class Main {
         System.out.println("5 - fill the hash-table with file content");
         System.out.println("6 - change the hash-function");
 
-        HashTable hashTable = new HashTable(256);
+        HashTable<Integer> hashTable = new HashTable<>(256);
 
         Scanner in = new Scanner(System.in);
         int input = 0;

@@ -8,7 +8,7 @@ class HashTableTest {
 
     @Test
     void hashAndChangeHashFunction() {
-        HashTable hashTable = new HashTable(10);
+        HashTable<Integer> hashTable = new HashTable<>(10);
 
         hashTable.addElement(15);
         hashTable.addElement(47);
@@ -29,7 +29,7 @@ class HashTableTest {
     void addElement() {
         int size = 20;
 
-        HashTable hashTable = new HashTable(size);
+        HashTable<Integer> hashTable = new HashTable<>(size);
 
         for (int i = 0; i < size; i++) {
             hashTable.addElement(i);
@@ -44,7 +44,7 @@ class HashTableTest {
     void removeElement() {
         int size = 20;
 
-        HashTable hashTable = new HashTable(size);
+        HashTable<Integer> hashTable = new HashTable<>(size);
 
         for (int i = 0; i < size; i++) {
             hashTable.addElement(i);
