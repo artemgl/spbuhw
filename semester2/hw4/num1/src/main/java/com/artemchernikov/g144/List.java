@@ -6,13 +6,19 @@ public class List<T> {
     private ListElement first;
     private int size;
 
-    /**A method adds received value to the head of the list*/
+    /**
+     * A method adds element to the head of the list
+     * @param value element to add
+     * */
     public void addElement(T value) {
         first = new ListElement(value, first);
         this.size++;
     }
 
-    /**A method removes received value from the list, if the list contains it*/
+    /**
+     * A method removes element from the list, if the list contains it
+     * @param value element to remove
+     * */
     public void removeElement(T value) {
         if (!isEmpty()) {
             if (value.equals(first.value)) {
@@ -38,8 +44,9 @@ public class List<T> {
     }
 
     /**
-     * A method returns value by received index
-     * If index is out of bounds, throws IndexOutOfBoundsException
+     * A method returns value by index
+     * @param index index of needed element
+     * @throws IndexOutOfBoundsException if received index is out of bounds
      * */
     public T getElement(int index) throws IndexOutOfBoundsException {
         if (index >= 0 && index < getSize()) {
@@ -54,7 +61,11 @@ public class List<T> {
         }
     }
 
-    /**A method returns true if the list contains received value and false in otherwise*/
+    /**
+     * A method checks if element exists in the list
+     * @param value element to check
+     * @return true if the list contains received value and false otherwise
+     * */
     public boolean exists(T value) {
         ListElement current = first;
         while (current != null) {
@@ -67,12 +78,18 @@ public class List<T> {
         return false;
     }
 
-    /**A method returns amount of list elements*/
+    /**
+     * A method returns number of list elements
+     * @return number of list elements
+     * */
     public int getSize() {
         return this.size;
     }
 
-    /**A method returns true if the list is empty and false in otherwise*/
+    /**
+     * A method checks if the list is empty
+     * @return true if the list is empty and false otherwise
+     * */
     public boolean isEmpty() {
         return first == null;
     }
@@ -89,12 +106,12 @@ public class List<T> {
 
     /**A class describing element of singly linked list*/
     private class ListElement {
+        private T value;
+        private ListElement next;
+
         private ListElement(T value, ListElement next) {
             this.value = value;
             this.next = next;
         }
-
-        private T value;
-        private ListElement next;
     }
 }
