@@ -1,5 +1,6 @@
 package com.artemchernikov.g144;
 
+import java.io.IOException;
 import java.util.Random;
 import java.util.Scanner;
 
@@ -32,9 +33,14 @@ public class Main {
                 break;
             case 2:
             default:
-                outputer = new OutputerToFile();
+                outputer = new OutputerToFile("file.txt");
                 break;
         }
-        outputer.output(numbers);
+
+        try {
+            outputer.output(numbers);
+        } catch (IOException exc) {
+            System.out.println("Input-output error: " + exc.getMessage());
+        }
     }
 }
