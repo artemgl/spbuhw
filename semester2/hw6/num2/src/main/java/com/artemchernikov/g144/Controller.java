@@ -5,142 +5,52 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 
-import java.util.Arrays;
-import java.util.List;
-
+import java.util.Map;
 
 public class Controller {
 
-    private Move crossesMove = new CrossesMove();
-    private Move noughtsMove = new NoughtsMove();
-    private Move currentMove = crossesMove;
-    private boolean gameOver = false;
+    private final Map<String, Integer> buttonNumbers = Map.of(
+            "btn0", 0,
+            "btn1", 1,
+            "btn2", 2,
+            "btn3", 3,
+            "btn4", 4,
+            "btn5", 5,
+            "btn6", 6,
+            "btn7", 7,
+            "btn8", 8
+    );
+
+    private TicTacToe ticTacToe = new TicTacToe();
 
     @FXML
-    private Label headline;
+    public Label headline;
 
     public void initialize() {
-        headline.setText(crossesMove.headlineWhileMove);
+        headline.setText("Crosses' move");
     }
 
-    /**A method changes currentMove and headline*/
-    private void switchTurn() {
-        currentMove = currentMove.symbol.equals("X") ? noughtsMove : crossesMove;
-        if (!gameOver) {
-            headline.setText(currentMove.headlineWhileMove);
-        }
-    }
-
-    /**
-     * A method updates winFactor in currentMove according with made move
-     * The move is determined by received button
-     * */
-    private void updateWinFactor(Button button) {
-        currentMove.winFactor += 1 << getButtonNumber(button);
-    }
-
-    /**A method returns number of the received button*/
-    private int getButtonNumber(Button button) {
-        switch (button.getId()) {
-            case "btn0":
-                return 0;
-            case "btn1":
-                return 1;
-            case "btn2":
-                return 2;
-            case "btn3":
-                return 3;
-            case "btn4":
-                return 4;
-            case "btn5":
-                return 5;
-            case "btn6":
-                return 6;
-            case "btn7":
-                return 7;
-            case "btn8":
-                return 8;
-            default:
-                throw new IllegalArgumentException("Unknown button");
-        }
-    }
-
-    /**
-     * A method processes made move:
-     * checks if current player is winner,
-     * if not - checks if it is draw.
-     * In case of game over displays suitable headline,
-     * in otherwise - switches turn
-     * */
+    /**A method makes move according to pressed button and updates headline*/
     public void makeMove(ActionEvent actionEvent) {
-        if (!gameOver) {
-            Button pressedButton = (Button)actionEvent.getSource();
-            if (pressedButton.getText().isEmpty()) {
-                pressedButton.setText(currentMove.symbol);
-                updateWinFactor(pressedButton);
-                currentMove.updateIsWinner();
-                if (currentMove.isWinner) {
-                    headline.setText(currentMove.headlineWhenGameOver);
-                    gameOver = true;
-                } else {
-                    if ((crossesMove.winFactor | noughtsMove.winFactor) == 511) {
-                        headline.setText("Draw");
-                        gameOver = true;
-                    }
-                }
-                switchTurn();
+        Button pressedButton = (Button)actionEvent.getSource();
+        if (ticTacToe.makeMove(buttonNumbers.get(pressedButton.getId()))) {
+            pressedButton.setText(ticTacToe.getCurrentMoveSymbol().equals("X") ? "O" : "X");
+
+            if (ticTacToe.isDraw()) {
+                headline.setText("Draw");
+                return;
             }
+            if (ticTacToe.crossesWin()) {
+                headline.setText("Crosses win!");
+                return;
+            }
+            if (ticTacToe.noughtsWin()) {
+                headline.setText("Noughts win!");
+                return;
+            }
+
+            headline.setText(ticTacToe.getCurrentMoveSymbol().equals("X") ? "Crosses' move" : "Noughts' move");
         }
     }
 
-    /**A class describing move*/
-    private class Move {
-        private Move() {
-            winFactor = 0;
-            symbol = "";
-            isWinner = false;
-            headlineWhileMove = "";
-            headlineWhenGameOver = "";
-        }
-
-        /**
-         * A field describing basic cases of win
-         *
-         * Playing field is represented by binary number
-         * If result of bitwise AND of current field named winFactor and the number from this list
-         * will not change the number, then player is winner
-         * */
-        private final List<Integer> winFactors = Arrays.asList(7, 56, 73, 84, 146, 273, 292, 448);
-        public int winFactor;
-        public String symbol;
-        public boolean isWinner;
-
-        public String headlineWhileMove;
-        public String headlineWhenGameOver;
-
-        /**A method checks if player is winner*/
-        void updateIsWinner() {
-            isWinner = winFactors.stream().anyMatch(n -> (n & winFactor) == n);
-        }
-    }
-
-    /**A class describing move of crosses*/
-    private class CrossesMove extends Move {
-        private CrossesMove() {
-            super();
-            symbol = "X";
-            headlineWhileMove = "Crosses' move";
-            headlineWhenGameOver = "Crosses win!";
-        }
-    }
-
-    /**A class describing move of noughts*/
-    private class NoughtsMove extends Move {
-        private NoughtsMove() {
-            super();
-            symbol = "O";
-            headlineWhileMove = "Noughts' move";
-            headlineWhenGameOver = "Noughts win!";
-        }
-    }
 }
