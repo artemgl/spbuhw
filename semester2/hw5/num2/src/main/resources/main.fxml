@@ -1,32 +1,33 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.String?>
+<?import javafx.collections.FXCollections?>
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Spinner?>
 <?import javafx.scene.control.TextField?>
-
-<?import java.lang.Integer?>
-<?import javafx.collections.FXCollections?>
-<?import java.lang.String?>
-<?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
-<?import javafx.geometry.Insets?>
+
 <GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="100.0" minWidth="400.0" prefHeight="100.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.artemchernikov.g144.Controller">
     <columnConstraints>
-        <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="80.0" prefWidth="80.0" />
+      <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="10.0" prefWidth="10.0" />
+        <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="70.0" prefWidth="70.0" />
         <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="60.0" prefWidth="60.0" />
         <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="70.0" prefWidth="70.0" />
         <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="25.0" prefWidth="25.0" />
-        <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="165.0" prefWidth="165.0" />
+        <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="155.0" prefWidth="155.0" />
+      <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="10.0" prefWidth="10.0" />
     </columnConstraints>
     <rowConstraints>
-        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        <RowConstraints maxHeight="1.7976931348623157E308" minHeight="100.0" prefHeight="100.0" vgrow="SOMETIMES" />
     </rowConstraints>
     <children>
-        <ChoiceBox fx:id="operation" value="+" onAction="#calculate" prefHeight="35.0" prefWidth="50.0" GridPane.columnIndex="1">
+        <ChoiceBox fx:id="operation" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" onAction="#calculate" prefHeight="35.0" prefWidth="50.0" value="+" GridPane.columnIndex="2">
             <GridPane.margin>
-                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                <Insets bottom="33.0" left="5.0" right="5.0" top="32.0" />
             </GridPane.margin>
             <items>
                 <FXCollections fx:factory="observableArrayList">
@@ -37,24 +38,24 @@
                 </FXCollections>
             </items>
         </ChoiceBox>
-        <Label prefWidth="15.0" text="=" GridPane.columnIndex="3">
+        <Label alignment="CENTER" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" prefHeight="35.0" prefWidth="15.0" text="=" GridPane.columnIndex="4">
             <GridPane.margin>
-                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                <Insets bottom="33.0" left="5.0" right="5.0" top="32.0" />
             </GridPane.margin>
         </Label>
-        <Spinner fx:id="firstOperand" editable="true" min="-9999" max="9999" onMouseClicked="#calculate" onKeyReleased="#calculate" prefHeight="35.0" prefWidth="60.0">
+        <Spinner fx:id="firstOperand" editable="true" max="9999" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" min="-9999" onKeyReleased="#calculate" onMouseClicked="#calculate" prefHeight="35.0" prefWidth="60.0" GridPane.columnIndex="1">
             <GridPane.margin>
-                <Insets bottom="5.0" left="15.0" right="5.0" top="5.0" />
+                <Insets bottom="33.0" left="5.0" right="5.0" top="32.0" />
             </GridPane.margin>
         </Spinner>
-        <Spinner fx:id="secondOperand" editable="true" min="-9999" max="9999" onMouseClicked="#calculate" onKeyReleased="#calculate" layoutX="15.0" layoutY="68.0" prefHeight="35.0" prefWidth="60.0" GridPane.columnIndex="2">
+        <Spinner fx:id="secondOperand" editable="true" layoutX="15.0" layoutY="68.0" max="9999" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" min="-9999" onKeyReleased="#calculate" onMouseClicked="#calculate" prefHeight="35.0" prefWidth="60.0" GridPane.columnIndex="3">
             <GridPane.margin>
-                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                <Insets bottom="33.0" left="5.0" right="5.0" top="32.0" />
             </GridPane.margin>
         </Spinner>
-        <TextField fx:id="result" editable="false" prefHeight="35.0" prefWidth="155.0" GridPane.columnIndex="4">
+        <TextField fx:id="result" editable="false" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" prefHeight="35.0" prefWidth="155.0" GridPane.columnIndex="5">
             <GridPane.margin>
-                <Insets bottom="5.0" left="5.0" right="15.0" top="5.0" />
+                <Insets bottom="33.0" left="5.0" right="5.0" top="32.0" />
             </GridPane.margin>
         </TextField>
     </children>
