@@ -21,20 +21,25 @@ public class Controller {
     /**A method changing font size so that all the symbols fit to the field*/
     private void setNeededTextSize(int lengthOfLine) {
         int size = 0;
+
+        final double fromSymbolWidthToFontSizeCoefficient = 1.5;
+        final int maxLengthOfLine = 15;
+        final int maxSize = (int)(answerField.getWidth() * fromSymbolWidthToFontSizeCoefficient / maxLengthOfLine);
+
         if (lengthOfLine == 0) {
-            size = 20;
+            size = maxSize;
         } else {
-            size = 322 / lengthOfLine;
-            if (size > 20) {
-                size = 20;
+            size = (int)(answerField.getWidth() * fromSymbolWidthToFontSizeCoefficient / lengthOfLine);
+            if (size > maxSize) {
+                size = maxSize;
             }
         }
 
         answerField.setStyle("-fx-font-size: " + size + ";");
     }
 
-    /**A method processing button presses*/
-    public void processButton(ActionEvent actionEvent) {
+    /**A method processing pressing on button with numeral or point*/
+    public void processNumeral(ActionEvent actionEvent) {
         Button pressedButton = (Button)actionEvent.getSource();
         String pressedButtonId = pressedButton.getId();
         switch (pressedButtonId) {
@@ -47,30 +52,35 @@ public class Controller {
             case "numeral6":
             case "numeral7":
             case "numeral8":
-            case "numeral9": {
+            case "numeral9":
                 if (currentNumber.equals("0")) {
                     currentNumber = "";
                 }
                 currentNumber += pressedButton.getText();
-                setNeededTextSize(currentNumber.length());
                 answerField.setText(currentNumber);
                 break;
-            }
-            case "point": {
+            case "point":
                 if (currentNumber.isEmpty()) {
                     currentNumber += "0";
                 }
                 if (!currentNumber.contains(".")) {
                     currentNumber += ".";
                 }
-                setNeededTextSize(currentNumber.length());
                 answerField.setText(currentNumber);
                 break;
-            }
+        }
+        setNeededTextSize(answerField.getText().length());
+    }
+
+    /**A method processing pressing on button with operator*/
+    public void processOperator(ActionEvent actionEvent) {
+        Button pressedButton = (Button)actionEvent.getSource();
+        String pressedButtonId = pressedButton.getId();
+        switch (pressedButtonId) {
             case "division":
             case "multiplication":
             case "subtraction":
-            case "addition": {
+            case "addition":
                 if (currentNumber.isEmpty()) {
                     if (expressionString.isEmpty()) {
                         if (answerField.getText().equals("Infinity") || answerField.getText().equals("-Infinity") || answerField.getText().equals("NaN")) {
@@ -101,17 +111,23 @@ public class Controller {
                 if (result.endsWith(".0")) {
                     result = result.substring(0, result.length() - 2);
                 }
-                setNeededTextSize(result.length());
                 answerField.setText(result);
                 break;
-            }
+        }
+        setNeededTextSize(answerField.getText().length());
+    }
+
+    /**A method processing pressing on button with data clearing*/
+    public void processTextEditingButton(ActionEvent actionEvent) {
+        Button pressedButton = (Button)actionEvent.getSource();
+        String pressedButtonId = pressedButton.getId();
+        switch (pressedButtonId) {
             case "backspace":
                 if (!currentNumber.isEmpty()) {
                     currentNumber = currentNumber.substring(0, currentNumber.length() - 1);
                     if (currentNumber.isEmpty()) {
                         currentNumber = "0";
                     }
-                    setNeededTextSize(currentNumber.length());
                     answerField.setText(currentNumber);
                 }
                 break;
@@ -119,28 +135,30 @@ public class Controller {
                 expression.setText(expressionString = "");
                 //fall through
             case "cleanEntry":
-                setNeededTextSize(currentNumber.length());
                 answerField.setText(currentNumber = "0");
                 break;
-            case "getResult":
-                if (currentNumber.isEmpty()) {
-                    expressionString += answerField.getText();
-                } else {
-                    if (currentNumber.endsWith(".")) {
-                        currentNumber = currentNumber.substring(0, currentNumber.length() - 1);
-                    }
-                    expressionString += " " + currentNumber;
-                }
-                currentNumber = "" + Calculator.calculate(expressionString);
-                expression.setText(expressionString = "");
-
-                if (currentNumber.endsWith(".0")) {
-                    currentNumber = currentNumber.substring(0, currentNumber.length() - 2);
-                }
-                setNeededTextSize(currentNumber.length());
-                answerField.setText(currentNumber);
-                currentNumber = "";
-                break;
         }
+        setNeededTextSize(answerField.getText().length());
+    }
+
+    /**A method processing pressing on button with equal sign*/
+    public void processGettingAnswer() {
+        if (currentNumber.isEmpty()) {
+            expressionString += answerField.getText();
+        } else {
+            if (currentNumber.endsWith(".")) {
+                currentNumber = currentNumber.substring(0, currentNumber.length() - 1);
+            }
+            expressionString += " " + currentNumber;
+        }
+        currentNumber = "" + Calculator.calculate(expressionString);
+        expression.setText(expressionString = "");
+
+        if (currentNumber.endsWith(".0")) {
+            currentNumber = currentNumber.substring(0, currentNumber.length() - 2);
+        }
+        setNeededTextSize(currentNumber.length());
+        answerField.setText(currentNumber);
+        currentNumber = "";
     }
 }
