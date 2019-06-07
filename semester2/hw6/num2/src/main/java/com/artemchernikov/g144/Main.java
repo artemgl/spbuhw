@@ -21,12 +21,12 @@ public class Main extends Application {
             root = FXMLLoader.load(getClass().getClassLoader().getResource("main.fxml"));
             Scene scene = new Scene(root);
             primaryStage.setTitle("Tic-tac-toe");
-            primaryStage.setMinWidth(190);
-            primaryStage.setMinHeight(216);
+            primaryStage.setMinWidth(204);
+            primaryStage.setMinHeight(253);
             primaryStage.setScene(scene);
             primaryStage.show();
         } catch (IOException exc) {
-            throw new RuntimeException(exc);
+            exc.printStackTrace();
         }
     }
 }
