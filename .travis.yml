@@ -5,3 +5,8 @@ os:
 - linux
 script:
 - cd semester2
+
+addons:
+  apt:
+    packages:
+      - oracle-java8-installer
