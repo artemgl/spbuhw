@@ -11,20 +11,7 @@ public class LazyFactory {
      * @return object implementing interface Lazy for single-threaded operations
      * */
     public static <T> Lazy<T> createSimpleLazy(Supplier<T> supplier) {
-        return new Lazy<>() {
-            private T value;
-            private boolean isCalculated;
-
-            @Override
-            public T get() {
-                if (isCalculated) {
-                    return value;
-                }
-
-                isCalculated = true;
-                return value = supplier.get();
-            }
-        };
+        return new SimpleLazy<>(supplier);
     }
 
     /**
@@ -33,22 +20,7 @@ public class LazyFactory {
      * @return object implementing interface Lazy for multi-threaded operations
      * */
     public static <T> Lazy<T> createMultiThreadedLazy(Supplier<T> supplier) {
-        return new Lazy<>() {
-            private T value;
-            private boolean isCalculated;
-
-            @Override
-            public T get() {
-                synchronized (this) {
-                    if (isCalculated) {
-                        return value;
-                    }
-
-                    isCalculated = true;
-                    return value = supplier.get();
-                }
-            }
-        };
+        return new MultiThreadedLazy<>(supplier);
     }
 
 }
