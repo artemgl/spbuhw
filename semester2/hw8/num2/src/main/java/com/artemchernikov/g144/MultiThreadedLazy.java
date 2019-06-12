@@ -2,30 +2,26 @@ package com.artemchernikov.g144;
 
 import java.util.function.Supplier;
 
+/**A class describing multi threaded lazy calculating*/
 public class MultiThreadedLazy<T> implements Lazy<T> {
 
     volatile private T value;
     volatile private Supplier<T> supplier;
 
-    public MultiThreadedLazy(Supplier<T> receivedSupplier) {
-        supplier = new Supplier<>() {
-            private boolean isCalculated;
-
-            @Override
-            public T get() {
-                synchronized (this) {
-                    if (isCalculated) {
-                        return value;
-                    }
-                    isCalculated = true;
-                    return value = receivedSupplier.get();
-                }
-            }
-        };
+    public MultiThreadedLazy(Supplier<T> supplier) {
+        this.supplier = supplier;
     }
 
+    /**{@inheritDoc}*/
+    @Override
     public T get() {
-        return supplier.get();
+        synchronized (this) {
+            if (supplier != null) {
+                value = supplier.get();
+                supplier = null;
+            }
+            return value;
+        }
     }
 
 }
