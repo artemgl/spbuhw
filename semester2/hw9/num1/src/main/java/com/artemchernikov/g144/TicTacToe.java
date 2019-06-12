@@ -55,6 +55,10 @@ public class TicTacToe {
         return isDraw;
     }
 
+    /**
+     * A method checks if game is over
+     * @return true if game is over and false otherwise
+     * */
     public boolean gameOver() {
         return isDraw || noughtsWin || crossesWin;
     }
@@ -98,14 +102,6 @@ public class TicTacToe {
 
         switchTurn();
         return true;
-    }
-
-    public String[] getField() {
-        return field;
-    }
-
-    public void setField(String[] field) {
-        this.field = field;
     }
 
     /**A class describing move*/

@@ -22,4 +22,4 @@ javafx {
     version = '11.0.2'
 }
 
-mainClassName = 'com.artemchernikov.g144.MenuController20'
+mainClassName = 'com.artemchernikov.g144.Main'

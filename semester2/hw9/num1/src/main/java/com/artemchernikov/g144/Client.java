@@ -1,34 +1,33 @@
 package com.artemchernikov.g144;
 
-import javafx.event.ActionEvent;
-import javafx.fxml.FXML;
-import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
-import java.io.*;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.Scanner;
+/**A class describing client side in connection*/
+public class Client extends TicTacToeConnection {
 
-import static java.lang.Thread.sleep;
+    private String ip;
+    private int port;
 
-public class Client extends Game {
-
-    private InputStream inputStream;
-    private OutputStream outputStream;
-
-    public Client(InputStream inputStream, OutputStream outputStream) {
-        super(inputStream, outputStream);
+    public Client(String ip, int port, Stage stage) {
+        super(stage);
+        this.ip = ip;
+        this.port = port;
     }
 
     @Override
-    public void initialize() {
-        super.initialize();
-        lockAllButtons();
+    protected boolean isServer() {
+        return false;
     }
+
+    @Override
+    protected String getIP() {
+        return ip;
+    }
+
+    @Override
+    protected int getPort() {
+        return port;
+    }
+
 }
 
