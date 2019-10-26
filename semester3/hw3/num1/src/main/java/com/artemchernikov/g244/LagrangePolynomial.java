@@ -1,5 +1,6 @@
 package com.artemchernikov.g244;
 
+/**A class describing polynomial given by some values at some points*/
 public class LagrangePolynomial {
 
     private double[] xValues;
@@ -10,6 +11,11 @@ public class LagrangePolynomial {
         this.yValues = yValues;
     }
 
+    /**
+     * A method calculates value of the polynomial at the point
+     * @param x point to calculate value at
+     * @return value at the received point
+     * */
     public double get(double x) {
         double result = 0;
         int size = xValues.length;

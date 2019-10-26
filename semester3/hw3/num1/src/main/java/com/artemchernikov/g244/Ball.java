@@ -5,6 +5,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 
+/**A class describing flying ball*/
 public class Ball extends Pane {
 
     private final double width = 27;
@@ -33,6 +34,10 @@ public class Ball extends Pane {
         getChildren().addAll(imageView);
     }
 
+    /**
+     * A method moves the ball to the point where it will be in some time
+     * @param deltaTime time through which we want to see the ball
+     * */
     public void move(long deltaTime) {
         setTranslateX(getTranslateX() +
                 power * Math.cos(Math.toRadians(angle)) * deltaTime * (direction == Direction.RIGHT ? 1 : -1));

@@ -7,6 +7,7 @@ import javafx.scene.layout.Pane;
 
 import java.util.ArrayList;
 
+/**A method describes the vehicle*/
 public class Vehicle extends Pane {
 
     private final double width = 43;
@@ -42,6 +43,11 @@ public class Vehicle extends Pane {
         getChildren().addAll(baseImageView, cannon);
     }
 
+    /**
+     * A method moves the vehicle
+     * @param dx horizontal offset of moving
+     * @param dy vertical offset of moving
+     * */
     public void increasePosition(double dx, double dy) {
         if (dx != 0) {
             setDirection(dx > 0 ? Direction.RIGHT : Direction.LEFT);
@@ -50,6 +56,10 @@ public class Vehicle extends Pane {
         setTranslateY(getTranslateY() + dy);
     }
 
+    /**
+     * A method changes rotation of the cannon
+     * @param dr angle to change the rotation on
+     * */
     public void increaseRotation(double dr) {
         double rotation = cannon.getRotate() + DEFAULT_ROTATION;
         rotation += dr;
@@ -72,12 +82,20 @@ public class Vehicle extends Pane {
         return cannon.getRotate() + DEFAULT_ROTATION;
     }
 
+    /**
+     * A method makes the vehicle shoot with the balls
+     * @return flying ball the vehicle has shot with
+     * */
     public Ball shoot() {
         Ball newBall = new Ball(30, getRotation(), getTranslateX(), getTranslateY(), direction);
         balls.add(newBall);
         return newBall;
     }
 
+    /**
+     * A method gives collection the balls
+     * @return list of all the balls which the vehicle fired
+     * */
     public ArrayList<Ball> getBalls() {
         return balls;
     }

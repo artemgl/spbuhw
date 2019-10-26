@@ -5,6 +5,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 
+/**A class describing explosion after the ball collides with the surface*/
 public class Explosion extends Pane {
 
     private final double width = 64;
@@ -28,6 +29,10 @@ public class Explosion extends Pane {
         getChildren().addAll(imageView);
     }
 
+    /**
+     * A method increases existence time of the explosion
+     * @param deltaTime time through which we want to see next condition of explosion
+     * */
     public void increaseExistenceTime(long deltaTime) {
         existenceTime += deltaTime;
         imageView.setViewport(new Rectangle2D(textureX += offsetX, 0, 64, 64));

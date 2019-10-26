@@ -7,6 +7,7 @@ import javafx.scene.paint.Paint;
 
 import java.util.Random;
 
+/**A class describing map*/
 public class Map extends Canvas {
 
     private LagrangePolynomial landscape;
@@ -27,13 +28,19 @@ public class Map extends Canvas {
         landscape = new LagrangePolynomial(xValues, yValues);
     }
 
+    /**
+     * A method checks whether the point is coordinate of land
+     * @param x abscissa of the point
+     * @param y ordinate of the point
+     * @return true if the received point looks at the land and false otherwise
+     * */
     public boolean isLand(double x, double y) {
         double coordX = x / getWidth() * (pointsCount - 1);
         double coordY = 1 - y / getHeight() * 2;
         return landscape.get(coordX) > coordY;
     }
 
-
+    /**A method renders the map*/
     public void render() {
         GraphicsContext graphicsContext = getGraphicsContext2D();
 
@@ -54,7 +61,6 @@ public class Map extends Canvas {
         while (beginX < getWidth()) {
             vectorY = (-landscape.get((beginX + vectorX) / getWidth() * (pointsCount - 1)) + 1) * getHeight() / 2 - beginY;
 
-            graphicsContext.strokeLine(beginX, beginY, beginX + vectorX, beginY + vectorY);
             graphicsContext.fillRect(beginX, Math.max(beginY, beginY + vectorY), vectorX,
                     getHeight() - Math.max(beginY, beginY + vectorY));
             graphicsContext.fillPolygon(new double[] {beginX, beginX + (vectorY < 0 ? vectorX : 0), beginX + vectorX},
