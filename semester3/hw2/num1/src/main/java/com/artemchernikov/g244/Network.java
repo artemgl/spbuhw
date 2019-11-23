@@ -1,6 +1,7 @@
 package com.artemchernikov.g244;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 /**A class describing context model of local network*/
 public class Network {
@@ -26,8 +27,13 @@ public class Network {
         return true;
     }
 
-    /**A method chooses one of the uninfected computers, tries to infect it and displays outcome to console*/
-    public void takeStep() {
+    /**
+     * A method chooses one of the uninfected computers, tries to infect it and displays outcome to console
+     * @param key key of generating chance
+     * */
+    public void takeStep(double key) {
+        final double suitableKey = key - Math.floor(key);
+
         Computer currentComputer = computers.stream().filter(c -> !c.isInfected()).findAny().orElse(null);
         if (currentComputer == null) {
             System.out.println("All the computers are infected!");
@@ -38,9 +44,14 @@ public class Network {
                 .filter(c -> connection.areRelated(currentComputer.getName(), c.getName()))
                 .filter(Computer::isInfected)
                 .findAny()
-                .ifPresent(c -> currentComputer.infect());
+                .ifPresent(c -> currentComputer.infect(suitableKey));
 
         System.out.println("Computer " + currentComputer.getName() + " has " + (currentComputer.isInfected() ? "" : "not ") + "been infected");
+    }
+
+    /**A method chooses one of the uninfected computers, tries to infect it and displays outcome to console*/
+    public void takeStep() {
+        takeStep((new Random()).nextDouble());
     }
 
     /**A method displays state of network to console*/

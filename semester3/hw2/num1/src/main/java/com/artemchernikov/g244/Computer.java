@@ -26,12 +26,19 @@ public class Computer {
 
     /**A method infects computer with chance according to its operation system*/
     public void infect() {
+        infect((new Random()).nextDouble());
+    }
+
+    /**
+     * A method infects computer with chance according to its operation system
+     * @param key key of generating chance
+     * */
+    public void infect(double key) {
         if (isInfected) {
             return;
         }
 
-        Random random = new Random();
-        if (random.nextDouble() < operationSystem.getInfectionChance()) {
+        if (key <= operationSystem.getInfectionChance()) {
             isInfected = true;
         }
     }
