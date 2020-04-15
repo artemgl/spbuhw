@@ -15,6 +15,6 @@ areBracketsCorrect = g 0 0 0 [] . filter (`elem` "()[]{}")
                                  (')', 1) -> g (a-1) b c tp xs
                                  (']', 2) -> g a (b-1) c tp xs
                                  ('}', 3) -> g a b (c-1) tp xs
-                                 otherwise -> False
+                                 _ -> False
                              where
                                  (hp, tp) = if p == [] then (0, []) else (head p, tail p)
