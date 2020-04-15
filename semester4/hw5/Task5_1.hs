@@ -11,13 +11,11 @@ main = do
 
 sums :: Int -> [[Int]]
 sums 1 = []
-sums n = [1..n `div` 2] >>= \k -> map (k:) $ specialSums k $ [n-k] : sums (n-k) where
-    specialSums 1 = id
-    specialSums k = filter cond where
-        cond sum = not $ foldl (||) False $ [1..(k-1)] >>= (\x -> [x `elem` sum])
+sums n = [1..n `div` 2] >>= \k -> map (k:) $ filter (\sum -> all (not.(`elem` sum)) [1..(k-1)]) $ [n-k] : sums (n-k)
 
 printSums :: [[Int]] -> IO ()
 printSums [] = return ()
 printSums (x:xs) = do
-    putStrLn $ foldl (\a b -> a ++ "+" ++ show b ) (show $ head x) (tail x)
+    putStr $ show $ head x
+    putStrLn $ concatMap (('+':).show) $ tail x
     printSums xs
