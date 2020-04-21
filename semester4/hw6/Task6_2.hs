@@ -31,10 +31,10 @@ remove e (Branch tL a tR)
         (_, Null) -> tL
         _ ->
             let
-                (a', tL') = popMax tL
-                popMax (Branch left el Null) = (el, left)
-                popMax (Branch left el right) = (fst pr, Branch left el (snd pr)) where
-                    pr = popMax right
+                (a', tL') = seizeMax tL
+                seizeMax (Branch left el Null) = (el, left)
+                seizeMax (Branch left el right) = (fst pr, Branch left el (snd pr)) where
+                    pr = seizeMax right
             in Branch tL' a' tR
         
 
