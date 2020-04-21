@@ -9,7 +9,7 @@ data BST a = Null | Branch (BST a) a (BST a)
 
 size :: BST a -> Int
 size Null = 0
-size (Branch tL a tR) = size tL + 1 + size tR
+size (Branch tL _ tR) = size tL + 1 + size tR
 
 insert :: Ord a => a -> BST a -> BST a
 insert e Null = Branch Null e Null
