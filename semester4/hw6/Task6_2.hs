@@ -7,12 +7,9 @@ import Data.List(sort)
 data BST a = Null | Branch (BST a) a (BST a)
     deriving (Show)
 
-instance Foldable BST where
-    foldr _ b Null = b
-    foldr f b (Branch tL a tR) = foldr f (f a $ foldr f b tR) tL
-
 size :: BST a -> Int
-size = foldl (const.(+1)) 0
+size Null = 0
+size (Branch tL a tR) = size tL + 1 + size tR
 
 insert :: Ord a => a -> BST a -> BST a
 insert e Null = Branch Null e Null
