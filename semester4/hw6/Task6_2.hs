@@ -91,8 +91,7 @@ fromList =
         fromList' [] = Null
         fromList' list = Branch (fromList left) mid (fromList right) where
             left = take ((n - 1) `div` 2) list
-            right = drop midIndex list
-            mid = head $ drop (midIndex - 1) list
-            midIndex = (n + 1) `div` 2
+            right = drop ((n + 1) `div` 2) list
+            mid = head $ drop ((n - 1) `div` 2) list
             n = length list
     in fromList' . sort
