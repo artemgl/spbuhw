@@ -60,27 +60,27 @@ getOne bounds = do
     put g'
     return x
 
-getAnyTree :: Random a => BST a -> State StdGen (BST a)
-getAnyTree Null = return Null
-getAnyTree (Branch tL a tR) = do
-    tL' <- getAnyTree tL
+getRandomTree :: Random a => BST a -> State StdGen (BST a)
+getRandomTree Null = return Null
+getRandomTree (Branch tL a tR) = do
+    tL' <- getRandomTree tL
     a' <- getAny
-    tR' <- getAnyTree tR
+    tR' <- getRandomTree tR
     return $ Branch tL' a' tR'
 
-getOneTree :: Random a => (a,a) -> BST a -> State StdGen (BST a)
-getOneTree bounds Null = return Null
-getOneTree bounds (Branch tL a tR) = do
-    tL' <- getOneTree bounds tL
+getRandomRTree :: Random a => (a,a) -> BST a -> State StdGen (BST a)
+getRandomRTree bounds Null = return Null
+getRandomRTree bounds (Branch tL a tR) = do
+    tL' <- getRandomRTree bounds tL
     a' <- getOne bounds
-    tR' <- getOneTree bounds tR
+    tR' <- getRandomRTree bounds tR
     return $ Branch tL' a' tR'
 
 randomize :: Random a => BST a -> StdGen -> BST a
-randomize = evalState . getAnyTree
+randomize = evalState . getRandomTree
 
 randomizeR :: Random a => (a, a) -> BST a -> StdGen -> BST a
-randomizeR = (evalState .) . getOneTree
+randomizeR = (evalState .) . getRandomRTree --(\bounds tree g -> evalState (getRandomRTree bounds tree) g)
 
 fromList :: Ord a => [a] -> BST a
 fromList =
@@ -92,3 +92,11 @@ fromList =
             mid = head $ drop ((n - 1) `div` 2) list
             n = length list
     in fromList' . sort
+
+tree1 = fromList [1..15] :: BST Int
+tree2 = Branch (Branch (Branch Null 3 (Branch Null 5 Null)) 8 (Branch (Branch Null 11 (Branch Null 14 Null)) 27 Null)) 32 (Branch Null 39 (Branch (Branch Null 41 Null) 50 Null))  :: BST Int
+
+testRandomize1 = randomize tree1 $ mkStdGen 1
+testRandomize2 = randomize tree2 $ mkStdGen 3
+testRandomizeR1 = randomizeR (0,100) tree1 $ mkStdGen 2
+testRandomizeR2 = randomizeR (100,200) tree2 $ mkStdGen 4
